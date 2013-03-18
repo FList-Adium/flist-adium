@@ -1,0 +1,530 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		3E116FA3164C42B600C1A504 /* FriBidi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E116FA2164C42B600C1A504 /* FriBidi.framework */; };
+		3E116FA6164C42D100C1A504 /* libgthread.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E116FA5164C42D100C1A504 /* libgthread.framework */; };
+		3E1EE9F2161A213E00227A1E /* PurpleDefaultsF-List.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3E1EE9F1161A213E00227A1E /* PurpleDefaultsF-List.plist */; };
+		3E5D27D1160BCDD300234193 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E5D27D0160BCDD300234193 /* Cocoa.framework */; };
+		3E5D27DB160BCDD300234193 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3E5D27D9160BCDD300234193 /* InfoPlist.strings */; };
+		3E5D2807160BD18E00234193 /* f-list_admin.c in Sources */ = {isa = PBXBuildFile; fileRef = 3E5D27E5160BD18E00234193 /* f-list_admin.c */; };
+		3E5D2808160BD18E00234193 /* f-list_autobuddy.c in Sources */ = {isa = PBXBuildFile; fileRef = 3E5D27E7160BD18E00234193 /* f-list_autobuddy.c */; };
+		3E5D2809160BD18E00234193 /* f-list_bbcode.c in Sources */ = {isa = PBXBuildFile; fileRef = 3E5D27E9160BD18E00234193 /* f-list_bbcode.c */; };
+		3E5D280A160BD18E00234193 /* f-list_callbacks.c in Sources */ = {isa = PBXBuildFile; fileRef = 3E5D27EB160BD18E00234193 /* f-list_callbacks.c */; };
+		3E5D280B160BD18E00234193 /* f-list_channels.c in Sources */ = {isa = PBXBuildFile; fileRef = 3E5D27ED160BD18E00234193 /* f-list_channels.c */; };
+		3E5D280C160BD18E00234193 /* f-list_commands.c in Sources */ = {isa = PBXBuildFile; fileRef = 3E5D27EF160BD18E00234193 /* f-list_commands.c */; };
+		3E5D280D160BD18E00234193 /* f-list_connection.c in Sources */ = {isa = PBXBuildFile; fileRef = 3E5D27F1160BD18E00234193 /* f-list_connection.c */; };
+		3E5D280E160BD18E00234193 /* f-list_friends.c in Sources */ = {isa = PBXBuildFile; fileRef = 3E5D27F3160BD18E00234193 /* f-list_friends.c */; };
+		3E5D280F160BD18E00234193 /* f-list_http.c in Sources */ = {isa = PBXBuildFile; fileRef = 3E5D27F5160BD18E00234193 /* f-list_http.c */; };
+		3E5D2810160BD18E00234193 /* f-list_icon.c in Sources */ = {isa = PBXBuildFile; fileRef = 3E5D27F7160BD18E00234193 /* f-list_icon.c */; };
+		3E5D2811160BD18E00234193 /* f-list_json.c in Sources */ = {isa = PBXBuildFile; fileRef = 3E5D27F9160BD18E00234193 /* f-list_json.c */; };
+		3E5D2812160BD18E00234193 /* f-list_kinks.c in Sources */ = {isa = PBXBuildFile; fileRef = 3E5D27FB160BD18E00234193 /* f-list_kinks.c */; };
+		3E5D2814160BD18E00234193 /* f-list_profile.c in Sources */ = {isa = PBXBuildFile; fileRef = 3E5D27FF160BD18E00234193 /* f-list_profile.c */; };
+		3E5D2815160BD18E00234193 /* f-list_status.c in Sources */ = {isa = PBXBuildFile; fileRef = 3E5D2801160BD18E00234193 /* f-list_status.c */; };
+		3E5D2816160BD18E00234193 /* f-list.c in Sources */ = {isa = PBXBuildFile; fileRef = 3E5D2803160BD18E00234193 /* f-list.c */; };
+		3E5D2817160BD18E00234193 /* flist-friends.c in Sources */ = {isa = PBXBuildFile; fileRef = 3E5D2805160BD18E00234193 /* flist-friends.c */; };
+		3E5D2828160BD38100234193 /* Adium.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E5D2827160BD38100234193 /* Adium.framework */; };
+		3E5D282A160BD3A500234193 /* AdiumLibpurple.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E5D2829160BD3A500234193 /* AdiumLibpurple.framework */; };
+		3E5D282C160BD3B900234193 /* AIUtilities.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E5D282B160BD3B900234193 /* AIUtilities.framework */; };
+		3E5D2836160BD3F900234193 /* libglib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E5D282E160BD3F900234193 /* libglib.framework */; };
+		3E5D2837160BD3F900234193 /* libgmodule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E5D282F160BD3F900234193 /* libgmodule.framework */; };
+		3E5D2838160BD3F900234193 /* libgobject.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E5D2830160BD3F900234193 /* libgobject.framework */; };
+		3E5D283A160BD3F900234193 /* libintl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E5D2832160BD3F900234193 /* libintl.framework */; };
+		3E5D283C160BD3F900234193 /* libpurple.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E5D2834160BD3F900234193 /* libpurple.framework */; };
+		3E5D2A0A160BE1B100234193 /* libjson-glib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E5D2A09160BE1B100234193 /* libjson-glib.framework */; };
+		3E5D2A15160BF27D00234193 /* flist.png in Resources */ = {isa = PBXBuildFile; fileRef = 3E5D2A14160BF27D00234193 /* flist.png */; };
+		3E5D2A1D160BFD3500234193 /* ESFlistAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E5D2A1A160BFD3500234193 /* ESFlistAccount.m */; };
+		3E5D2A1E160BFD3500234193 /* ESFlistService.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E5D2A1C160BFD3500234193 /* ESFlistService.m */; };
+		3E6CD6A1164C5EEE007D7D88 /* flist-small.png in Resources */ = {isa = PBXBuildFile; fileRef = 3E6CD6A0164C5EEE007D7D88 /* flist-small.png */; };
+		3EBA4F48160C1C82003D09FD /* ESFlistAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EBA4F47160C1C82003D09FD /* ESFlistAccountViewController.m */; };
+		3ECF4AA7161B4F3E00BCFA2F /* ESFlistAccountView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3ECF4AA6161B4F3E00BCFA2F /* ESFlistAccountView.xib */; };
+		3ECF4AB0161BB9B600BCFA2F /* ESFlistChatJoinViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF4AAF161BB9B500BCFA2F /* ESFlistChatJoinViewController.m */; };
+		3ECF4AB3161BBB4F00BCFA2F /* ESFlistChatJoinView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3ECF4AB2161BBB4E00BCFA2F /* ESFlistChatJoinView.xib */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		3E116FA2164C42B600C1A504 /* FriBidi.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FriBidi.framework; path = ../adium/Frameworks/FriBidi.framework; sourceTree = "<group>"; };
+		3E116FA5164C42D100C1A504 /* libgthread.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = libgthread.framework; path = ../adium/Frameworks/libgthread.framework; sourceTree = "<group>"; };
+		3E1EE9F1161A213E00227A1E /* PurpleDefaultsF-List.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "PurpleDefaultsF-List.plist"; sourceTree = "<group>"; };
+		3E5D27CD160BCDD300234193 /* F-Chat Plugin.AdiumLibpurplePlugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = "F-Chat Plugin.AdiumLibpurplePlugin"; path = "F-Chat.AdiumLibpurplePlugin"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3E5D27D0160BCDD300234193 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		3E5D27D3160BCDD300234193 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		3E5D27D4160BCDD300234193 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		3E5D27D5160BCDD300234193 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		3E5D27D8160BCDD300234193 /* F-Chat-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "F-Chat-Info.plist"; sourceTree = "<group>"; };
+		3E5D27DA160BCDD300234193 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		3E5D27DC160BCDD300234193 /* F-Chat-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "F-Chat-Prefix.pch"; sourceTree = "<group>"; };
+		3E5D27E5160BD18E00234193 /* f-list_admin.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "f-list_admin.c"; sourceTree = "<group>"; };
+		3E5D27E6160BD18E00234193 /* f-list_admin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "f-list_admin.h"; sourceTree = "<group>"; };
+		3E5D27E7160BD18E00234193 /* f-list_autobuddy.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "f-list_autobuddy.c"; sourceTree = "<group>"; };
+		3E5D27E8160BD18E00234193 /* f-list_autobuddy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "f-list_autobuddy.h"; sourceTree = "<group>"; };
+		3E5D27E9160BD18E00234193 /* f-list_bbcode.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "f-list_bbcode.c"; sourceTree = "<group>"; };
+		3E5D27EA160BD18E00234193 /* f-list_bbcode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "f-list_bbcode.h"; sourceTree = "<group>"; };
+		3E5D27EB160BD18E00234193 /* f-list_callbacks.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "f-list_callbacks.c"; sourceTree = "<group>"; };
+		3E5D27EC160BD18E00234193 /* f-list_callbacks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "f-list_callbacks.h"; sourceTree = "<group>"; };
+		3E5D27ED160BD18E00234193 /* f-list_channels.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "f-list_channels.c"; sourceTree = "<group>"; };
+		3E5D27EE160BD18E00234193 /* f-list_channels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "f-list_channels.h"; sourceTree = "<group>"; };
+		3E5D27EF160BD18E00234193 /* f-list_commands.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "f-list_commands.c"; sourceTree = "<group>"; };
+		3E5D27F0160BD18E00234193 /* f-list_commands.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "f-list_commands.h"; sourceTree = "<group>"; };
+		3E5D27F1160BD18E00234193 /* f-list_connection.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "f-list_connection.c"; sourceTree = "<group>"; };
+		3E5D27F2160BD18E00234193 /* f-list_connection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "f-list_connection.h"; sourceTree = "<group>"; };
+		3E5D27F3160BD18E00234193 /* f-list_friends.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "f-list_friends.c"; sourceTree = "<group>"; };
+		3E5D27F4160BD18E00234193 /* f-list_friends.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "f-list_friends.h"; sourceTree = "<group>"; };
+		3E5D27F5160BD18E00234193 /* f-list_http.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "f-list_http.c"; sourceTree = "<group>"; };
+		3E5D27F6160BD18E00234193 /* f-list_http.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "f-list_http.h"; sourceTree = "<group>"; };
+		3E5D27F7160BD18E00234193 /* f-list_icon.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "f-list_icon.c"; sourceTree = "<group>"; };
+		3E5D27F8160BD18E00234193 /* f-list_icon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "f-list_icon.h"; sourceTree = "<group>"; };
+		3E5D27F9160BD18E00234193 /* f-list_json.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "f-list_json.c"; sourceTree = "<group>"; };
+		3E5D27FA160BD18E00234193 /* f-list_json.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "f-list_json.h"; sourceTree = "<group>"; };
+		3E5D27FB160BD18E00234193 /* f-list_kinks.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "f-list_kinks.c"; sourceTree = "<group>"; };
+		3E5D27FC160BD18E00234193 /* f-list_kinks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "f-list_kinks.h"; sourceTree = "<group>"; };
+		3E5D27FF160BD18E00234193 /* f-list_profile.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "f-list_profile.c"; sourceTree = "<group>"; };
+		3E5D2800160BD18E00234193 /* f-list_profile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "f-list_profile.h"; sourceTree = "<group>"; };
+		3E5D2801160BD18E00234193 /* f-list_status.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "f-list_status.c"; sourceTree = "<group>"; };
+		3E5D2802160BD18E00234193 /* f-list_status.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "f-list_status.h"; sourceTree = "<group>"; };
+		3E5D2803160BD18E00234193 /* f-list.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "f-list.c"; sourceTree = "<group>"; };
+		3E5D2804160BD18E00234193 /* f-list.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "f-list.h"; sourceTree = "<group>"; };
+		3E5D2805160BD18E00234193 /* flist-friends.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "flist-friends.c"; sourceTree = "<group>"; };
+		3E5D2806160BD18E00234193 /* flist-friends.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "flist-friends.h"; sourceTree = "<group>"; };
+		3E5D2827160BD38100234193 /* Adium.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Adium.framework; path = "../../Library/Developer/Xcode/DerivedData/Adium-bfxnvjfkitclmugzfcxljoidvsqc/Build/Products/Debug/Adium.framework"; sourceTree = "<group>"; };
+		3E5D2829160BD3A500234193 /* AdiumLibpurple.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdiumLibpurple.framework; path = "../../Library/Developer/Xcode/DerivedData/Adium-bfxnvjfkitclmugzfcxljoidvsqc/Build/Products/Debug/AdiumLibpurple.framework"; sourceTree = "<group>"; };
+		3E5D282B160BD3B900234193 /* AIUtilities.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AIUtilities.framework; path = "../../Library/Developer/Xcode/DerivedData/Adium-bfxnvjfkitclmugzfcxljoidvsqc/Build/Products/Debug/AIUtilities.framework"; sourceTree = "<group>"; };
+		3E5D282E160BD3F900234193 /* libglib.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = libglib.framework; path = ../adium/Frameworks/libglib.framework; sourceTree = "<group>"; };
+		3E5D282F160BD3F900234193 /* libgmodule.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = libgmodule.framework; path = ../adium/Frameworks/libgmodule.framework; sourceTree = "<group>"; };
+		3E5D2830160BD3F900234193 /* libgobject.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = libgobject.framework; path = ../adium/Frameworks/libgobject.framework; sourceTree = "<group>"; };
+		3E5D2832160BD3F900234193 /* libintl.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = libintl.framework; path = ../adium/Frameworks/libintl.framework; sourceTree = "<group>"; };
+		3E5D2834160BD3F900234193 /* libpurple.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = libpurple.framework; path = ../adium/Frameworks/libpurple.framework; sourceTree = "<group>"; };
+		3E5D2A09160BE1B100234193 /* libjson-glib.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = "libjson-glib.framework"; sourceTree = "<group>"; };
+		3E5D2A14160BF27D00234193 /* flist.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = flist.png; path = "F-Chat/flist.png"; sourceTree = "<group>"; };
+		3E5D2A19160BFD3500234193 /* ESFlistAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESFlistAccount.h; sourceTree = "<group>"; };
+		3E5D2A1A160BFD3500234193 /* ESFlistAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ESFlistAccount.m; sourceTree = "<group>"; };
+		3E5D2A1B160BFD3500234193 /* ESFlistService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESFlistService.h; sourceTree = "<group>"; };
+		3E5D2A1C160BFD3500234193 /* ESFlistService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ESFlistService.m; sourceTree = "<group>"; };
+		3E6CD6A0164C5EEE007D7D88 /* flist-small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "flist-small.png"; path = "F-Chat/flist-small.png"; sourceTree = "<group>"; };
+		3EBA4F46160C1C82003D09FD /* ESFlistAccountViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESFlistAccountViewController.h; sourceTree = "<group>"; };
+		3EBA4F47160C1C82003D09FD /* ESFlistAccountViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ESFlistAccountViewController.m; sourceTree = "<group>"; };
+		3ECF4AA6161B4F3E00BCFA2F /* ESFlistAccountView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ESFlistAccountView.xib; sourceTree = "<group>"; };
+		3ECF4AAE161BB9B400BCFA2F /* ESFlistChatJoinViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESFlistChatJoinViewController.h; sourceTree = "<group>"; };
+		3ECF4AAF161BB9B500BCFA2F /* ESFlistChatJoinViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ESFlistChatJoinViewController.m; sourceTree = "<group>"; };
+		3ECF4AB2161BBB4E00BCFA2F /* ESFlistChatJoinView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ESFlistChatJoinView.xib; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		3E5D27CA160BCDD300234193 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3E5D27D1160BCDD300234193 /* Cocoa.framework in Frameworks */,
+				3E5D2828160BD38100234193 /* Adium.framework in Frameworks */,
+				3E5D282A160BD3A500234193 /* AdiumLibpurple.framework in Frameworks */,
+				3E5D282C160BD3B900234193 /* AIUtilities.framework in Frameworks */,
+				3E5D2836160BD3F900234193 /* libglib.framework in Frameworks */,
+				3E5D2837160BD3F900234193 /* libgmodule.framework in Frameworks */,
+				3E5D2838160BD3F900234193 /* libgobject.framework in Frameworks */,
+				3E5D283A160BD3F900234193 /* libintl.framework in Frameworks */,
+				3E5D283C160BD3F900234193 /* libpurple.framework in Frameworks */,
+				3E5D2A0A160BE1B100234193 /* libjson-glib.framework in Frameworks */,
+				3E116FA3164C42B600C1A504 /* FriBidi.framework in Frameworks */,
+				3E116FA6164C42D100C1A504 /* libgthread.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		3E5D27C2160BCDD300234193 = {
+			isa = PBXGroup;
+			children = (
+				3E6CD6A5164C60BC007D7D88 /* Resources */,
+				3EBA4F45160C1C37003D09FD /* Adium */,
+				3EBA4F44160C1BF2003D09FD /* F-List Pidgin */,
+				3E5D27D6160BCDD300234193 /* F-Chat */,
+				3E5D27CF160BCDD300234193 /* Frameworks */,
+				3E5D27CE160BCDD300234193 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		3E5D27CE160BCDD300234193 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				3E5D27CD160BCDD300234193 /* F-Chat Plugin.AdiumLibpurplePlugin */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		3E5D27CF160BCDD300234193 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				3E116FA5164C42D100C1A504 /* libgthread.framework */,
+				3E116FA2164C42B600C1A504 /* FriBidi.framework */,
+				3E5D2A09160BE1B100234193 /* libjson-glib.framework */,
+				3E5D282E160BD3F900234193 /* libglib.framework */,
+				3E5D282F160BD3F900234193 /* libgmodule.framework */,
+				3E5D2830160BD3F900234193 /* libgobject.framework */,
+				3E5D2832160BD3F900234193 /* libintl.framework */,
+				3E5D2834160BD3F900234193 /* libpurple.framework */,
+				3E5D282B160BD3B900234193 /* AIUtilities.framework */,
+				3E5D2829160BD3A500234193 /* AdiumLibpurple.framework */,
+				3E5D2827160BD38100234193 /* Adium.framework */,
+				3E5D27D0160BCDD300234193 /* Cocoa.framework */,
+				3E5D27D2160BCDD300234193 /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		3E5D27D2160BCDD300234193 /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				3E5D27D3160BCDD300234193 /* AppKit.framework */,
+				3E5D27D4160BCDD300234193 /* CoreData.framework */,
+				3E5D27D5160BCDD300234193 /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		3E5D27D6160BCDD300234193 /* F-Chat */ = {
+			isa = PBXGroup;
+			children = (
+				3E5D27D7160BCDD300234193 /* Supporting Files */,
+			);
+			path = "F-Chat";
+			sourceTree = "<group>";
+		};
+		3E5D27D7160BCDD300234193 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				3E5D27DC160BCDD300234193 /* F-Chat-Prefix.pch */,
+				3E5D27D8160BCDD300234193 /* F-Chat-Info.plist */,
+				3E5D27D9160BCDD300234193 /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		3E6CD6A5164C60BC007D7D88 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				3E6CD6A0164C5EEE007D7D88 /* flist-small.png */,
+				3E5D2A14160BF27D00234193 /* flist.png */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		3EBA4F44160C1BF2003D09FD /* F-List Pidgin */ = {
+			isa = PBXGroup;
+			children = (
+				3E5D27E5160BD18E00234193 /* f-list_admin.c */,
+				3E5D27E6160BD18E00234193 /* f-list_admin.h */,
+				3E5D27E7160BD18E00234193 /* f-list_autobuddy.c */,
+				3E5D27E8160BD18E00234193 /* f-list_autobuddy.h */,
+				3E5D27E9160BD18E00234193 /* f-list_bbcode.c */,
+				3E5D27EA160BD18E00234193 /* f-list_bbcode.h */,
+				3E5D27EB160BD18E00234193 /* f-list_callbacks.c */,
+				3E5D27EC160BD18E00234193 /* f-list_callbacks.h */,
+				3E5D27ED160BD18E00234193 /* f-list_channels.c */,
+				3E5D27EE160BD18E00234193 /* f-list_channels.h */,
+				3E5D27EF160BD18E00234193 /* f-list_commands.c */,
+				3E5D27F0160BD18E00234193 /* f-list_commands.h */,
+				3E5D27F1160BD18E00234193 /* f-list_connection.c */,
+				3E5D27F2160BD18E00234193 /* f-list_connection.h */,
+				3E5D27F3160BD18E00234193 /* f-list_friends.c */,
+				3E5D27F4160BD18E00234193 /* f-list_friends.h */,
+				3E5D27F5160BD18E00234193 /* f-list_http.c */,
+				3E5D27F6160BD18E00234193 /* f-list_http.h */,
+				3E5D27F7160BD18E00234193 /* f-list_icon.c */,
+				3E5D27F8160BD18E00234193 /* f-list_icon.h */,
+				3E5D27F9160BD18E00234193 /* f-list_json.c */,
+				3E5D27FA160BD18E00234193 /* f-list_json.h */,
+				3E5D27FB160BD18E00234193 /* f-list_kinks.c */,
+				3E5D27FC160BD18E00234193 /* f-list_kinks.h */,
+				3E5D27FF160BD18E00234193 /* f-list_profile.c */,
+				3E5D2800160BD18E00234193 /* f-list_profile.h */,
+				3E5D2801160BD18E00234193 /* f-list_status.c */,
+				3E5D2802160BD18E00234193 /* f-list_status.h */,
+				3E5D2803160BD18E00234193 /* f-list.c */,
+				3E5D2804160BD18E00234193 /* f-list.h */,
+				3E5D2805160BD18E00234193 /* flist-friends.c */,
+				3E5D2806160BD18E00234193 /* flist-friends.h */,
+			);
+			name = "F-List Pidgin";
+			sourceTree = "<group>";
+		};
+		3EBA4F45160C1C37003D09FD /* Adium */ = {
+			isa = PBXGroup;
+			children = (
+				3E5D2A19160BFD3500234193 /* ESFlistAccount.h */,
+				3E5D2A1A160BFD3500234193 /* ESFlistAccount.m */,
+				3E5D2A1B160BFD3500234193 /* ESFlistService.h */,
+				3E5D2A1C160BFD3500234193 /* ESFlistService.m */,
+				3EBA4F46160C1C82003D09FD /* ESFlistAccountViewController.h */,
+				3EBA4F47160C1C82003D09FD /* ESFlistAccountViewController.m */,
+				3ECF4AA6161B4F3E00BCFA2F /* ESFlistAccountView.xib */,
+				3E1EE9F1161A213E00227A1E /* PurpleDefaultsF-List.plist */,
+				3ECF4AAE161BB9B400BCFA2F /* ESFlistChatJoinViewController.h */,
+				3ECF4AAF161BB9B500BCFA2F /* ESFlistChatJoinViewController.m */,
+				3ECF4AB2161BBB4E00BCFA2F /* ESFlistChatJoinView.xib */,
+			);
+			name = Adium;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		3E5D27CC160BCDD300234193 /* F-Chat */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3E5D27DF160BCDD300234193 /* Build configuration list for PBXNativeTarget "F-Chat" */;
+			buildPhases = (
+				3E5D27C9160BCDD300234193 /* Sources */,
+				3E5D27CA160BCDD300234193 /* Frameworks */,
+				3E5D27CB160BCDD300234193 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "F-Chat";
+			productName = "F-Chat";
+			productReference = 3E5D27CD160BCDD300234193 /* F-Chat Plugin.AdiumLibpurplePlugin */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		3E5D27C4160BCDD300234193 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0440;
+				ORGANIZATIONNAME = "Colin Muller";
+			};
+			buildConfigurationList = 3E5D27C7160BCDD300234193 /* Build configuration list for PBXProject "F-Chat Plugin" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 3E5D27C2160BCDD300234193;
+			productRefGroup = 3E5D27CE160BCDD300234193 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				3E5D27CC160BCDD300234193 /* F-Chat */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		3E5D27CB160BCDD300234193 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3E5D27DB160BCDD300234193 /* InfoPlist.strings in Resources */,
+				3E5D2A15160BF27D00234193 /* flist.png in Resources */,
+				3E1EE9F2161A213E00227A1E /* PurpleDefaultsF-List.plist in Resources */,
+				3ECF4AA7161B4F3E00BCFA2F /* ESFlistAccountView.xib in Resources */,
+				3ECF4AB3161BBB4F00BCFA2F /* ESFlistChatJoinView.xib in Resources */,
+				3E6CD6A1164C5EEE007D7D88 /* flist-small.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		3E5D27C9160BCDD300234193 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3E5D2807160BD18E00234193 /* f-list_admin.c in Sources */,
+				3E5D2808160BD18E00234193 /* f-list_autobuddy.c in Sources */,
+				3E5D2809160BD18E00234193 /* f-list_bbcode.c in Sources */,
+				3E5D280A160BD18E00234193 /* f-list_callbacks.c in Sources */,
+				3E5D280B160BD18E00234193 /* f-list_channels.c in Sources */,
+				3E5D280C160BD18E00234193 /* f-list_commands.c in Sources */,
+				3E5D280D160BD18E00234193 /* f-list_connection.c in Sources */,
+				3E5D280E160BD18E00234193 /* f-list_friends.c in Sources */,
+				3E5D280F160BD18E00234193 /* f-list_http.c in Sources */,
+				3E5D2810160BD18E00234193 /* f-list_icon.c in Sources */,
+				3E5D2811160BD18E00234193 /* f-list_json.c in Sources */,
+				3E5D2812160BD18E00234193 /* f-list_kinks.c in Sources */,
+				3E5D2814160BD18E00234193 /* f-list_profile.c in Sources */,
+				3E5D2815160BD18E00234193 /* f-list_status.c in Sources */,
+				3E5D2816160BD18E00234193 /* f-list.c in Sources */,
+				3E5D2817160BD18E00234193 /* flist-friends.c in Sources */,
+				3E5D2A1D160BFD3500234193 /* ESFlistAccount.m in Sources */,
+				3E5D2A1E160BFD3500234193 /* ESFlistService.m in Sources */,
+				3EBA4F48160C1C82003D09FD /* ESFlistAccountViewController.m in Sources */,
+				3ECF4AB0161BB9B600BCFA2F /* ESFlistChatJoinViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		3E5D27D9160BCDD300234193 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				3E5D27DA160BCDD300234193 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		3E5D27DD160BCDD300234193 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_ENABLE_OBJC_ARC = NO;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_ENTITLEMENTS = "";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "F-Chat";
+				SDKROOT = macosx;
+				WRAPPER_EXTENSION = AdiumLibpurplePlugin;
+			};
+			name = Debug;
+		};
+		3E5D27DE160BCDD300234193 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_ENABLE_OBJC_ARC = NO;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_ENTITLEMENTS = "";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				ONLY_ACTIVE_ARCH = NO;
+				PRODUCT_NAME = "F-Chat";
+				SDKROOT = macosx;
+				WRAPPER_EXTENSION = AdiumLibpurplePlugin;
+			};
+			name = Release;
+		};
+		3E5D27E0160BCDD300234193 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ADIUM = "$(HOME)/Development/adium";
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEPLOYMENT_LOCATION = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(ADIUM)/Frameworks",
+					"$(ADIUM)/build/Release",
+					"$(PROJECT_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "F-Chat/F-Chat-Prefix.pch";
+				GCC_VERSION = "";
+				HEADER_SEARCH_PATHS = (
+					"$(ADIUM)/Frameworks/libpurple.framework/Headers",
+					"$(ADIUM)/Frameworks/libglib.framework/Headers",
+					"$(ADIUM)/Frameworks/libjson-glib.framework/Headers",
+					"$(ADIUM)/build",
+					"$(ADIUM)/Frameworks/libintl.framework/Headers",
+					"$(ADIUM)/build/Release/AdiumLibpurple.framework/Headers",
+					"$(PROJECT_DIR)/libjson-glib.framework/Headers",
+				);
+				INFOPLIST_FILE = "F-Chat/F-Chat-Info.plist";
+				INSTALL_PATH = "$(HOME)/Library/Application Support/Adium 2.0/PlugIns/";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CFLAGS = "-DPURPLE_STATIC_PRPL";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				WRAPPER_EXTENSION = AdiumLibpurplePlugin;
+			};
+			name = Debug;
+		};
+		3E5D27E1160BCDD300234193 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ADIUM = "$(HOME)/Development/adium";
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				COMBINE_HIDPI_IMAGES = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEPLOYMENT_LOCATION = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(ADIUM)/Frameworks",
+					"$(ADIUM)/build/Release",
+					"$(PROJECT_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "F-Chat/F-Chat-Prefix.pch";
+				GCC_VERSION = "";
+				HEADER_SEARCH_PATHS = (
+					"$(ADIUM)/Frameworks/libpurple.framework/Headers",
+					"$(ADIUM)/Frameworks/libglib.framework/Headers",
+					"$(ADIUM)/Frameworks/libjson-glib.framework/Headers",
+					"$(ADIUM)/build",
+					"$(ADIUM)/Frameworks/libintl.framework/Headers",
+					"$(ADIUM)/build/Release/AdiumLibpurple.framework/Headers",
+					"$(PROJECT_DIR)/libjson-glib.framework/Headers",
+				);
+				INFOPLIST_FILE = "F-Chat/F-Chat-Info.plist";
+				INSTALL_PATH = "$(HOME)/Library/Application Support/Adium 2.0/PlugIns/";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = "-DPURPLE_STATIC_PRPL";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				WRAPPER_EXTENSION = AdiumLibpurplePlugin;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		3E5D27C7160BCDD300234193 /* Build configuration list for PBXProject "F-Chat Plugin" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3E5D27DD160BCDD300234193 /* Debug */,
+				3E5D27DE160BCDD300234193 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3E5D27DF160BCDD300234193 /* Build configuration list for PBXNativeTarget "F-Chat" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3E5D27E0160BCDD300234193 /* Debug */,
+				3E5D27E1160BCDD300234193 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 3E5D27C4160BCDD300234193 /* Project object */;
+}
