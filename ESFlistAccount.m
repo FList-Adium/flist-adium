@@ -80,12 +80,36 @@
         return "looking";
     else if ([[statusState statusName] isEqualToString:STATUS_NAME_AWAY])
         return "away";
-    else if ([[statusState statusName] isEqualToString:STATUS_NAME_BUSY])
-        return "busy";
+    else if ([[statusState statusName] isEqualToString:STATUS_NAME_STEPPED_OUT])
+        return "away";
+    else if ([[statusState statusName] isEqualToString:STATUS_NAME_VACATION])
+        return "away";
+    else if ([[statusState statusName] isEqualToString:STATUS_NAME_EXTENDED_AWAY])
+        return "away";
     else if ([[statusState statusName] isEqualToString:STATUS_NAME_DND])
         return "dnd";
-    else
+    else if ([[statusState statusName] isEqualToString:STATUS_NAME_PHONE])
+        return "dnd";
+    else if ([[statusState statusName] isEqualToString:STATUS_NAME_OFFLINE])
         return "offline";
+    else if ([[statusState statusName] isEqualToString:STATUS_NAME_OCCUPIED])
+        return "dnd";
+    else if ([[statusState statusName] isEqualToString:STATUS_NAME_AWAY_FRIENDS_ONLY])
+        return "away";
+    else if ([[statusState statusName] isEqualToString:STATUS_NAME_BUSY])
+        return "dnd";
+    else if ([[statusState statusName] isEqualToString:STATUS_NAME_LUNCH])
+        return "away";
+    else if ([[statusState statusName] isEqualToString:STATUS_NAME_NOT_AT_DESK])
+        return "away";
+    else if ([[statusState statusName] isEqualToString:STATUS_NAME_NOT_AT_HOME])
+        return "away";
+    else if ([[statusState statusName] isEqualToString:STATUS_NAME_NOT_AVAILABLE])
+        return "away";
+    else if ([[statusState statusName] isEqualToString:STATUS_NAME_NOT_IN_OFFICE])
+        return "away";
+    else
+        return "online";
 }
 
 - (void)autoReconnectAfterDelay:(NSTimeInterval)delay

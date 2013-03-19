@@ -344,8 +344,8 @@ static GList *flist_actions(PurplePlugin *plugin, gpointer context) {
     act = purple_plugin_action_new(_("Create Private Channel"), flist_create_private_channel_action);
     list = g_list_append(list, act);
 
-    act = purple_plugin_action_new(_("Set Status"), flist_set_status_action);
-    list = g_list_append(list, act);
+/*    act = purple_plugin_action_new(_("Set Status"), flist_set_status_action);
+    list = g_list_append(list, act);*/
 
     act = purple_plugin_action_new(_("Character Search"), flist_filter_action);
     list = g_list_append(list, act);
@@ -509,7 +509,7 @@ void flist_login(PurpleAccount *pa) {
     g_strfreev(ac_split);
 }
 
-static GList *flist_status_types(PurpleAccount *account) {
+GList *flist_status_types(PurpleAccount *account) {
     GList *types = NULL;
     PurpleStatusType *status;
 
@@ -562,7 +562,7 @@ static PurplePluginProtocolInfo prpl_info = {
     NULL,                           /* set_info */
     flist_send_typing,        /* send_typing */
     flist_get_profile,        /* get_info */
-    NULL,               /* set_status */
+    flist_purple_set_status,               /* set_status */
     NULL,                    /* set_idle */
     NULL,                    /* change_passwd */
     flist_pidgin_add_buddy,        /* add_buddy */
@@ -650,11 +650,11 @@ static void plugin_init(PurplePlugin *plugin) {
     split = purple_account_user_split_new("Character", "", ':');
     prpl_info.user_splits = g_list_append(prpl_info.user_splits, split);
 
-//    option = purple_account_option_bool_new("Sync Status", "sync_status", FALSE);
-//    prpl_info.protocol_options = g_list_append(prpl_info.protocol_options, option);
+/*    option = purple_account_option_bool_new("Sync Status", "sync_status", TRUE);
+    prpl_info.protocol_options = g_list_append(prpl_info.protocol_options, option);
 
-//    option = purple_account_option_bool_new("Sync Status Message", "sync_status_message", FALSE);
-//    prpl_info.protocol_options = g_list_append(prpl_info.protocol_options, option);
+    option = purple_account_option_bool_new("Sync Status Message", "sync_status_message", TRUE);
+    prpl_info.protocol_options = g_list_append(prpl_info.protocol_options, option);*/
     
     option = purple_account_option_string_new("Server Address", "server_address", "chat.f-list.net");
     prpl_info.protocol_options = g_list_append(prpl_info.protocol_options, option);

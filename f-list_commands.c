@@ -274,7 +274,8 @@ void flist_create_private_channel_action(PurplePluginAction *action) {
     fla->input_request = TRUE;
 }
 
-
+// Removed, status sync was fixed.
+/*
 void flist_set_status_action_cb(gpointer user_data, PurpleRequestFields *fields) {
     PurpleConnection *pc = user_data;
     FListAccount *fla = pc->proto_data;
@@ -293,7 +294,6 @@ void flist_set_status_action_cb(gpointer user_data, PurpleRequestFields *fields)
     
     fla->input_request = FALSE;
 }
-
 static void flist_set_status_dialog(FListAccount *fla) {
     PurpleRequestFields *fields;
     PurpleRequestFieldGroup *group;
@@ -308,7 +308,7 @@ static void flist_set_status_dialog(FListAccount *fla) {
     fields = purple_request_fields_new();
     purple_request_fields_add_group(fields, group);
 
-    default_value = 0; /* we need to find the default value first to work around a Pidgin bug */
+    default_value = 0; // we need to find the default value first to work around a Pidgin bug
     i = 0;
     status_list = flist_get_status_list();
     while(status_list) {
@@ -337,7 +337,7 @@ static void flist_set_status_dialog(FListAccount *fla) {
         fla->pa, NULL, NULL, fla->pc);     
     
     fla->input_request = TRUE;
-    
+ 
 }
 
 void flist_set_status_action(PurplePluginAction *action) {
@@ -349,7 +349,7 @@ void flist_set_status_action(PurplePluginAction *action) {
     
     flist_set_status_dialog(fla);
 }
-
+*/
 static guint64 flist_now() {
     GTimeVal time;
     g_get_current_time(&time);
@@ -367,7 +367,16 @@ void flist_join_channel(PurpleConnection *pc, GHashTable *components) {
     
     channel = g_hash_table_lookup(components, CHANNEL_COMPONENTS_NAME);
     g_return_if_fail(channel);
-
+    
+    /*
+     * TODO: Look up 'channel' before connecting to see if
+     * it's a valid channel. If not, check if it's in the
+     * list of private rooms and transparently join if so.
+     *
+     * This also serves as a lazy way
+     * to join private rooms.
+     */
+    
     /* Pidgin can sometimes try to automatically join the channel twice at the same time. */
     /* Don't let this happen! */
     last_ptr = g_hash_table_lookup(fla->chat_timestamp, channel);
@@ -650,14 +659,14 @@ PurpleCmdRet flist_channels_cmd(PurpleConversation *convo, const gchar *cmd, gch
     return PURPLE_CMD_STATUS_OK;
 }
 
-PurpleCmdRet flist_status_cmd(PurpleConversation *convo, const gchar *cmd, gchar **args, gchar **error, void *data) {
+/*PurpleCmdRet flist_status_cmd(PurpleConversation *convo, const gchar *cmd, gchar **args, gchar **error, void *data) {
     PurpleConnection *pc = purple_conversation_get_gc(convo);
     FListAccount *fla = pc->proto_data;
     
     flist_set_status_dialog(fla);
     
     return PURPLE_CMD_STATUS_OK;
-}
+}*/
 
 PurpleCmdRet flist_whoami_cmd(PurpleConversation *convo, const gchar *cmd, gchar **args, gchar **error, void *data) {
     PurpleConnection *pc = purple_conversation_get_gc(convo);
@@ -689,8 +698,8 @@ void flist_init_commands() {
     purple_cmd_register("channels", "", PURPLE_CMD_P_PRPL, anywhere_flags,
         FLIST_PLUGIN_ID, flist_channels_cmd, "channels: Opens the list of channels.", NULL);
 
-    purple_cmd_register("status", "", PURPLE_CMD_P_PRPL, anywhere_flags,
-        FLIST_PLUGIN_ID, flist_status_cmd, "status: Opens a dialog box to set your status.", NULL);
+/*    purple_cmd_register("status", "", PURPLE_CMD_P_PRPL, anywhere_flags,
+        FLIST_PLUGIN_ID, flist_status_cmd, "status: Opens a dialog box to set your status.", NULL);*/
     
     purple_cmd_register("whoami", "", PURPLE_CMD_P_PRPL, anywhere_flags,
         FLIST_PLUGIN_ID, flist_whoami_cmd, "whoami: Displays which character you are using.", NULL);
