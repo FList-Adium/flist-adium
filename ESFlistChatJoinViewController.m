@@ -61,8 +61,11 @@
     {
         usleep(1000);
     }
+    purple_roomlist_ref(roomList);
     GList *cur = roomList->rooms;
     [channelPopupButton removeAllItems];
+    [channelPopupButton addItemWithTitle:@"Select a channel..."];
+    [[channelPopupButton lastItem] setEnabled:NO];
     [channelPopupButton addItemWithTitle:@"Public"];
     [[channelPopupButton lastItem] setEnabled:NO];
     while(cur)
@@ -121,7 +124,6 @@
             }
             cur = g_list_next(cur);
         }
-        
 		//The chatCreationInfo has keys corresponding to the GHashTable keys and values to match them.
 		chatCreationInfo = [NSMutableDictionary dictionaryWithObject:channel
 															  forKey:@"channel"];
@@ -145,5 +147,10 @@
 	}
     [channelPopupButton synchronizeTitleAndSelectedItem];
 }
-
+-(void) dealloc
+{
+    if(roomList)
+        purple_roomlist_unref(roomList);
+    [super dealloc];
+}
 @end
