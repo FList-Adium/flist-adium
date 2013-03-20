@@ -209,6 +209,8 @@ PurpleRoomlist *flist_get_roomlist(PurpleConnection *pc) {
     
     purple_roomlist_set_fields(fla->roomlist, fields);
     
+    purple_roomlist_set_in_progress(fla->roomlist, TRUE);
+    
     flist_request(pc, FLIST_REQUEST_CHANNEL_LIST, NULL);
     
     return fla->roomlist;
@@ -367,15 +369,6 @@ void flist_join_channel(PurpleConnection *pc, GHashTable *components) {
     
     channel = g_hash_table_lookup(components, CHANNEL_COMPONENTS_NAME);
     g_return_if_fail(channel);
-    
-    /*
-     * TODO: Look up 'channel' before connecting to see if
-     * it's a valid channel. If not, check if it's in the
-     * list of private rooms and transparently join if so.
-     *
-     * This also serves as a lazy way
-     * to join private rooms.
-     */
     
     /* Pidgin can sometimes try to automatically join the channel twice at the same time. */
     /* Don't let this happen! */

@@ -24,9 +24,14 @@
  */
 
 #import <Adium/DCJoinChatViewController.h>
+#import <SLPurpleCocoaAdapter.h>
+#import "ESFlistAccount.h"
 
 @interface ESFlistChatJoinViewController : DCJoinChatViewController {
-	IBOutlet	NSTextField	*textField_channel;
+    IBOutlet NSPopUpButton *channelPopupButton;
+    PurpleRoomlist *roomList;
+    BOOL isRoomListLoaded;
+    
 }
-
+- (IBAction)selectionChanged:(id)sender;
 @end
