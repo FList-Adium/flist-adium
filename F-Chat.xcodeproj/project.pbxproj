@@ -302,8 +302,9 @@
 		3E5D27C4160BCDD300234193 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				CLASSPREFIX = ESFlist;
 				LastUpgradeCheck = 0440;
-				ORGANIZATIONNAME = "Colin Muller";
+				ORGANIZATIONNAME = "";
 			};
 			buildConfigurationList = 3E5D27C7160BCDD300234193 /* Build configuration list for PBXProject "F-Chat" */;
 			compatibilityVersion = "Xcode 3.2";

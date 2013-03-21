@@ -63,8 +63,8 @@ typedef struct FListFriends_ FListFriends;
 //void flist_account_set_operator(PurpleConnection *pc, const gchar *name, gboolean operator);
 
 #define FLIST_CLIENT_NAME "F-List Adium"
-#define FLIST_PLUGIN_VERSION    "1.5.1"
-#define USER_AGENT              "Adium F-Chat 1.5.1"
+#define FLIST_PLUGIN_VERSION    "1.5.3"
+#define USER_AGENT              "Adium F-Chat 1.5.3"
 #define FLIST_PLUGIN_ID         "prpl-flist"
 #define FLIST_PORT              9722
 #define GLOBAL_NAME             "#FList"
