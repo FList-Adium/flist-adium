@@ -52,7 +52,7 @@
 		3E116FA2164C42B600C1A504 /* FriBidi.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FriBidi.framework; path = ../adium/Frameworks/FriBidi.framework; sourceTree = "<group>"; };
 		3E116FA5164C42D100C1A504 /* libgthread.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = libgthread.framework; path = ../adium/Frameworks/libgthread.framework; sourceTree = "<group>"; };
 		3E1EE9F1161A213E00227A1E /* PurpleDefaultsF-List.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "PurpleDefaultsF-List.plist"; sourceTree = "<group>"; };
-		3E5D27CD160BCDD300234193 /* F-Chat Plugin.AdiumLibpurplePlugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = "F-Chat Plugin.AdiumLibpurplePlugin"; path = "F-Chat.AdiumLibpurplePlugin"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3E5D27CD160BCDD300234193 /* F-Chat.AdiumLibpurplePlugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "F-Chat.AdiumLibpurplePlugin"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E5D27D0160BCDD300234193 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		3E5D27D3160BCDD300234193 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		3E5D27D4160BCDD300234193 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
@@ -155,7 +155,7 @@
 		3E5D27CE160BCDD300234193 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				3E5D27CD160BCDD300234193 /* F-Chat Plugin.AdiumLibpurplePlugin */,
+				3E5D27CD160BCDD300234193 /* F-Chat.AdiumLibpurplePlugin */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -293,7 +293,7 @@
 			);
 			name = "F-Chat";
 			productName = "F-Chat";
-			productReference = 3E5D27CD160BCDD300234193 /* F-Chat Plugin.AdiumLibpurplePlugin */;
+			productReference = 3E5D27CD160BCDD300234193 /* F-Chat.AdiumLibpurplePlugin */;
 			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
