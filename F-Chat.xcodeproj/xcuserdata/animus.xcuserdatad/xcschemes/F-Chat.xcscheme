@@ -42,6 +42,13 @@
       <PathRunnable
          FilePath = "/Users/animus/Library/Developer/Xcode/DerivedData/Adium-hahrnivkdkvponarltkxzbovowrl/Build/Products/Debug/Adium.app">
       </PathRunnable>
+      <EnvironmentVariables>
+         <EnvironmentVariable
+            key = "CA_DEBUG_TRANSACTIONS=1"
+            value = "1"
+            isEnabled = "NO">
+         </EnvironmentVariable>
+      </EnvironmentVariables>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>

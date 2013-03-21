@@ -44,10 +44,7 @@
 	return @"ESFlistChatJoinView";
 }
 - (void)awakeFromNib {
-    [channelPopupButton setAutoenablesItems:NO];
-    [channelPopupButton setEnabled:NO];
     [roomListProgressIndicator setDisplayedWhenStopped:NO];
-    isRoomListLoaded = NO;
 }
 
 - (void) setRoomListArray:(NSMutableArray *)a
@@ -63,7 +60,7 @@
 {
 	[super configureForAccount:inAccount];
 	
-	[[view window] makeFirstResponder:channelPopupButton];
+	[[view window] makeFirstResponder:channelTextField];
     ESFlistAccount *acc = (ESFlistAccount *) account;
     PurpleAccount *pa = [acc purpleAccount];
     PurpleConnection *pc = purple_account_get_connection(pa);
@@ -90,14 +87,17 @@
         {
             [fListRoom populateWithRoomListRoom:room];
             [roomsToAdd addObject:fListRoom];
+            [fListRoom release];
         }else{
             NSLog(@"fListRoom was null!");
         }
         cur = g_list_next(cur);
     }
-    [roomListController addObjects:roomsToAdd];
-    [roomListController rearrangeObjects];
-    isRoomListLoaded = YES;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [roomListController addObjects:roomsToAdd];
+        [roomListController rearrangeObjects];
+    });
+    [roomsToAdd release];
     [roomListProgressIndicator stopAnimation:self];
 }
 
@@ -124,6 +124,7 @@
 	} else {
 		NSLog(@"Error: No channel specified.");
 	}
+    [channel release];
 	
 }
 

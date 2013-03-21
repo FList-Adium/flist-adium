@@ -29,9 +29,7 @@
 #import "ESFlistRoom.h"
 
 @interface ESFlistChatJoinViewController : DCJoinChatViewController {
-    IBOutlet NSPopUpButton *channelPopupButton;
     PurpleRoomlist *roomList;
-    BOOL isRoomListLoaded;
     IBOutlet NSProgressIndicator *roomListProgressIndicator;
     IBOutlet NSArrayController *roomListController;
     NSMutableArray *roomListArray;
