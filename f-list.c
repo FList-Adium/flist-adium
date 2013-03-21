@@ -627,7 +627,7 @@ static PurplePluginInfo info = {
     FLIST_PLUGIN_VERSION,             /* version */
     "F-List Protocol Plugin",         /* summary */
     "F-List Protocol Plugin",         /* description */
-    "TestPanther",         /* author */
+    "TestPanther, Maou, John Highwater",         /* author */
     "http://f-list.net/",    /* homepage */
     plugin_load,                     /* load */
     plugin_unload,                     /* unload */

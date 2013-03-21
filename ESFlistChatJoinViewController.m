@@ -30,6 +30,15 @@
 @end
 
 @implementation ESFlistChatJoinViewController
+- (id) init
+{
+    self = [super init];
+    if(self)
+    {
+        roomListArray = [[NSMutableArray alloc] init];
+    }
+    return self;
+}
 - (NSString *)nibName
 {
 	return @"ESFlistChatJoinView";
@@ -37,6 +46,17 @@
 - (void)awakeFromNib {
     [channelPopupButton setAutoenablesItems:NO];
     [channelPopupButton setEnabled:NO];
+    [roomListProgressIndicator setDisplayedWhenStopped:NO];
+    isRoomListLoaded = NO;
+}
+
+- (void) setRoomListArray:(NSMutableArray *)a
+{
+    if(a==roomListArray)
+        return;
+    [roomListArray release];
+    [a retain];
+    roomListArray = a;
 }
 
 - (void)configureForAccount:(AIAccount *)inAccount
@@ -44,53 +64,41 @@
 	[super configureForAccount:inAccount];
 	
 	[[view window] makeFirstResponder:channelPopupButton];
-	[self selectionChanged:self];
-    isRoomListLoaded = NO;
-    [NSThread detachNewThreadSelector:@selector(populateDropDown:) toTarget:self withObject:nil];
-}
-
-// Populate the dropdown...
-- (void)populateDropDown:(id)param
-{
     ESFlistAccount *acc = (ESFlistAccount *) account;
     PurpleAccount *pa = [acc purpleAccount];
     PurpleConnection *pc = purple_account_get_connection(pa);
     roomList = purple_roomlist_get_list(pc);
-    usleep(100000);
+    purple_roomlist_ref(roomList);
+    [NSThread detachNewThreadSelector:@selector(populateRoomList:) toTarget:self withObject:nil];
+}
+
+// Populate the dropdown...
+- (void)populateRoomList:(id)param
+{
+    [roomListProgressIndicator startAnimation:self];
     while(roomList->in_progress == 1)
     {
         usleep(1000);
     }
-    purple_roomlist_ref(roomList);
     GList *cur = roomList->rooms;
-    [channelPopupButton removeAllItems];
-    [channelPopupButton addItemWithTitle:@"Select a channel..."];
-    [[channelPopupButton lastItem] setEnabled:NO];
-    [channelPopupButton addItemWithTitle:@"Public"];
-    [[channelPopupButton lastItem] setEnabled:NO];
+    NSMutableArray *roomsToAdd = [[NSMutableArray alloc] init];
     while(cur)
     {
         PurpleRoomlistRoom *room = cur->data;
-        if(!strcmp(room->fields->next->data, "Public"))
+        ESFlistRoom *fListRoom = [[ESFlistRoom alloc] init];
+        if(fListRoom)
         {
-            [channelPopupButton addItemWithTitle:[NSString stringWithUTF8String:room->name]];
+            [fListRoom populateWithRoomListRoom:room];
+            [roomsToAdd addObject:fListRoom];
+        }else{
+            NSLog(@"fListRoom was null!");
         }
         cur = g_list_next(cur);
     }
-    cur = roomList->rooms;
-    [channelPopupButton addItemWithTitle:@"Private"];
-    [[channelPopupButton lastItem] setEnabled:NO];
-    while(cur)
-    {
-        PurpleRoomlistRoom *room = cur->data;
-        if(!strcmp(room->fields->next->data, "Private"))
-        {
-            [channelPopupButton addItemWithTitle:[NSString stringWithUTF8String:room->name]];
-        }
-        cur = g_list_next(cur);
-    }
+    [roomListController addObjects:roomsToAdd];
+    [roomListController rearrangeObjects];
     isRoomListLoaded = YES;
-    [channelPopupButton setEnabled:YES];
+    [roomListProgressIndicator stopAnimation:self];
 }
 
 - (void)joinChatWithAccount:(AIAccount *)inAccount
@@ -99,31 +107,10 @@
 	NSMutableDictionary	*chatCreationInfo;
 	
 	//Obtain room and exchange from the view
-	channel = [channelPopupButton titleOfSelectedItem];
+	channel = [channelTextField stringValue];
+    [channel retain];
 	
-	if (channel && [channel length] && isRoomListLoaded) {
-        
-        // Convert channel name into appropriate private name if necessary.
-        // First, get the linked list of rooms.
-        GList *cur = roomList->rooms;
-        while(cur)
-        {
-            PurpleRoomlistRoom *room = cur->data;
-            const char *channelCString = [channel UTF8String];
-            // Check if channel name is equal to the current room title.
-            if(!strcmp(room->name, channelCString))
-            {
-                // Check if it's not Public.
-                if(strcmp("Public", room->fields->next->data))
-                {
-                    // It's private, so it has a special name. Get it and set it.
-                    channel = [NSString stringWithUTF8String:room->fields->data];
-                }
-                // We found our name, so we'll bail.
-                break;
-            }
-            cur = g_list_next(cur);
-        }
+	if (channel && [channel length]) {
 		//The chatCreationInfo has keys corresponding to the GHashTable keys and values to match them.
 		chatCreationInfo = [NSMutableDictionary dictionaryWithObject:channel
 															  forKey:@"channel"];
@@ -135,22 +122,44 @@
 		   withInvitationMessage:nil];
 		
 	} else {
-		NSLog(@"Error: No channel specified/roomlist not loaded.");
+		NSLog(@"Error: No channel specified.");
 	}
 	
 }
-- (IBAction)selectionChanged:(id)sender {
+
+//Entered text is changing
+- (void)controlTextDidChange:(NSNotification *)notification
+{
+	if ([notification object] == channelTextField) {
+		[self validateEnteredText];
+	}
+}
+
+-(void)tableViewSelectionDidChange: (NSNotification *)notification
+{
+    if([notification object] == channelListTable)
+    {
+        NSInteger index = [roomListController selectionIndex];
+        ESFlistRoom *room = [roomListArray objectAtIndex:index];
+        [channelTextField setStringValue:[room valueForKey:@"channelName" ]];
+    }
+}
+
+
+- (void)validateEnteredText
+{
 	if (delegate && [delegate respondsToSelector:@selector(setJoinChatEnabled:)]) {
-		NSString	*channel = [channelPopupButton stringValue];
+		NSString	*channel = [channelTextField stringValue];
         
 		[delegate setJoinChatEnabled:(channel && [channel length])];
 	}
-    [channelPopupButton synchronizeTitleAndSelectedItem];
 }
+
 -(void) dealloc
 {
     if(roomList)
         purple_roomlist_unref(roomList);
+    [roomListArray release];
     [super dealloc];
 }
 @end
