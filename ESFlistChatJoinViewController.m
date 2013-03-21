@@ -142,7 +142,9 @@
     {
         NSInteger index = [roomListController selectionIndex];
         ESFlistRoom *room = [roomListArray objectAtIndex:index];
-        [channelTextField setStringValue:[room valueForKey:@"channelName" ]];
+        NSString *channel = [room valueForKey:@"channelName" ];
+        [channelTextField setStringValue:channel];
+        [delegate setJoinChatEnabled:(channel && [channel length])];
     }
 }
 
