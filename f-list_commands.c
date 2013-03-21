@@ -23,6 +23,15 @@
 static gboolean is_empty_status(FListStatus status) {
     return status == FLIST_STATUS_AVAILABLE || status == FLIST_STATUS_OFFLINE;
 }
+
+static gchar *flist_escape_special(const gchar *str)
+{
+    return g_strescape(str, NULL);
+}
+static gchar *flist_unescape_special(const gchar *str)
+{
+    return g_strcompress(str);
+}
 void flist_update_friend(PurpleConnection *pc, const gchar *name, gboolean update_icon, gboolean new_buddy) {
     PurpleAccount *pa = purple_connection_get_account(pc);
     FListAccount *fla = pc->proto_data;
@@ -435,7 +444,7 @@ int flist_send_message(PurpleConnection *pc, const gchar *who, const gchar *mess
     PurpleAccount *pa = purple_connection_get_account(pc);
     JsonObject *json;
     PurpleConvIm *im;
-    gchar *stripped_message, *escaped_message, *local_message, *bbcode_message;
+    gchar *stripped_message, *escaped_message, *local_message, *bbcode_message, *special_message, *unspecial_message;
     int ret;
 
     g_return_val_if_fail(fla, 0);
@@ -443,9 +452,11 @@ int flist_send_message(PurpleConnection *pc, const gchar *who, const gchar *mess
     purple_debug(PURPLE_DEBUG_INFO, "flist", "Sending: %s\n", message);
     purple_debug(PURPLE_DEBUG_INFO, "flist", "Flags: %x\n", flags);
 
-    stripped_message = purple_markup_strip_html(message); /* strip out formatting */
-    escaped_message = purple_unescape_html(stripped_message); /* escape the html entities that are left */
-    local_message = purple_markup_escape_text(stripped_message, -1); /* re-escape the html entities */
+    special_message = flist_escape_special(message);
+    stripped_message = purple_markup_strip_html(special_message); /* strip out formatting */
+    unspecial_message = flist_unescape_special(stripped_message);
+    escaped_message = purple_unescape_html(unspecial_message); /* escape the html entities that are left */
+    local_message = purple_markup_escape_text(unspecial_message, -1); /* re-escape the html entities */
     bbcode_message = flist_bbcode_to_html(fla, NULL, local_message); /* convert the bbcode to html to display locally */
 
     json = json_object_new();
@@ -468,6 +479,8 @@ int flist_send_message(PurpleConnection *pc, const gchar *who, const gchar *mess
     g_free(escaped_message);
     g_free(bbcode_message);
     g_free(local_message);
+    g_free(unspecial_message);
+    g_free(special_message);
 
     return ret;
 }
@@ -500,7 +513,7 @@ int flist_send_channel_message(PurpleConnection *pc, int id, const char *message
     PurpleConversation *convo = purple_find_chat(pc, id);
     JsonObject *json = json_object_new();
     const gchar *channel;
-    gchar *stripped_message, *escaped_message, *local_message, *bbcode_message;
+    gchar *stripped_message, *escaped_message, *local_message, *bbcode_message, *special_message, *unspecial_message;
 
     g_return_val_if_fail((fla = pc->proto_data), -EINVAL);
 
@@ -512,9 +525,11 @@ int flist_send_channel_message(PurpleConnection *pc, int id, const char *message
     purple_debug(PURPLE_DEBUG_INFO, "flist", "Sending: %s\n", message);
     purple_debug(PURPLE_DEBUG_INFO, "flist", "Flags: %x\n", flags);
 
-    stripped_message = purple_markup_strip_html(message); /* strip out formatting */
-    escaped_message = purple_unescape_html(stripped_message); /* unescape the html entities that are left */
-    local_message = purple_markup_escape_text(stripped_message, -1); /* re-escape the html entities */
+    special_message = flist_escape_special(message);
+    stripped_message = purple_markup_strip_html(special_message); /* strip out formatting */
+    unspecial_message = flist_unescape_special(stripped_message);
+    escaped_message = purple_unescape_html(unspecial_message); /* unescape the html entities that are left */
+    local_message = purple_markup_escape_text(unspecial_message, -1); /* re-escape the html entities */
     bbcode_message = flist_bbcode_to_html(fla, convo, local_message); /* convert the bbcode to html to display locally */
     channel = purple_conversation_get_name(convo);
     json_object_set_string_member(json, "message", escaped_message);
@@ -530,6 +545,8 @@ int flist_send_channel_message(PurpleConnection *pc, int id, const char *message
     g_free(stripped_message);
     g_free(bbcode_message);
     g_free(local_message);
+    g_free(special_message);
+    g_free(unspecial_message);
     
     return 0;
 }
