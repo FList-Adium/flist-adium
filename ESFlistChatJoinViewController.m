@@ -140,8 +140,7 @@
 {
     if([notification object] == channelListTable)
     {
-        NSInteger index = [roomListController selectionIndex];
-        ESFlistRoom *room = [roomListArray objectAtIndex:index];
+        ESFlistRoom *room = [[roomListController selectedObjects] objectAtIndex:0];
         NSString *channel = [room valueForKey:@"channelName" ];
         [channelTextField setStringValue:channel];
         [delegate setJoinChatEnabled:(channel && [channel length])];
