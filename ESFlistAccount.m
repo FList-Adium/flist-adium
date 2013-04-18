@@ -203,6 +203,7 @@ static NSMutableDictionary *iconCache = nil;
 {
     while(runLoop)
     {
+        usleep(125000);
         if([iconQueue count] == 0)
             continue;
         AIListContact *contact = [iconQueue objectAtIndex:0];
@@ -238,7 +239,6 @@ static NSMutableDictionary *iconCache = nil;
             @catch (...) {
                 NSLog(@"Failed to fetch contact image for '%@'", contactName);
             }
-            usleep(125000);
         }
     }
 }
