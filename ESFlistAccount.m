@@ -38,6 +38,26 @@
 
 @implementation ESFlistAccount
 
+static NSMutableDictionary *iconCache = nil;
++ (void)initialize
+{
+    iconCache = [[NSMutableDictionary alloc] init];
+}
+- (void)initAccount
+{
+    [super initAccount];
+    requestedIcons = [[NSMutableSet alloc] init];
+    completedIcons = [[NSMutableSet alloc] init];
+    iconQueue = [[NSMutableArray alloc] init];
+    runLoop = YES;
+    [NSThread detachNewThreadSelector:@selector(iconRequest:) toTarget:self withObject:nil];
+}
+-(void) disconnect
+{
+    runLoop = NO;
+    [super disconnect];
+}
+
 - (const char*)protocolPlugin
 {
     return "prpl-flist";
@@ -139,6 +159,12 @@
     [super configurePurpleAccount];
     
     PurpleAccount *acct = [self purpleAccount];
+
+    const char *flist_server_address = [[self preferenceForKey:KEY_FLIST_SERVER_HOST group:GROUP_ACCOUNT_STATUS] UTF8String];
+    purple_account_set_string(acct, "server_address", flist_server_address);
+    
+    int flist_server_port = [[self preferenceForKey:KEY_FLIST_SERVER_PORT group:GROUP_ACCOUNT_STATUS] integerValue];
+    purple_account_set_int(acct, "server_port", flist_server_port);
     
     BOOL flist_use_websocket = [[self preferenceForKey:KEY_FLIST_USE_WEBSOCKET group:GROUP_ACCOUNT_STATUS] boolValue];
     purple_account_set_bool(acct, "use_websocket_handshake", flist_use_websocket);
@@ -152,6 +178,69 @@
     BOOL flist_debug = [[self preferenceForKey:KEY_FLIST_DEBUG group:GROUP_ACCOUNT_STATUS] boolValue];
     purple_account_set_bool(acct, "debug_mode", flist_debug);
 
+}
+
+- (NSData *)serversideIconDataForContact:(AIListContact *)contact
+{
+    NSString *contactName = [[[contact displayName] lowercaseString] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    if(!contactName)
+        return nil;
+    
+    if([iconQueue containsObject:contactName] || [requestedIcons containsObject:contactName])
+    {
+        if([completedIcons containsObject:contactName])
+        {
+            return [iconCache objectForKey:contactName];
+        }
+    }else{
+        [iconQueue addObject:contact];
+    }
+    return nil;
+}
+
+
+- (void)iconRequest:(id) param
+{
+    while(runLoop)
+    {
+        if([iconQueue count] == 0)
+            continue;
+        AIListContact *contact = [iconQueue objectAtIndex:0];
+        if(!contact)
+            continue;
+        NSString *contactName = [[[contact displayName] lowercaseString] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        [requestedIcons addObject:contactName];
+        [iconQueue removeObjectAtIndex:0];
+        @synchronized(iconCache)
+        {
+            NSData *dat = [iconCache objectForKey:contactName];
+            if(dat)
+            {
+                [self updateIcon:contact withData:dat];
+                continue;
+            }
+            NSURL *avURL;
+            NSError *error;
+            @try {
+                NSString *urlString = [NSString stringWithFormat: @"http://static.f-list.net/images/avatar/%@.png", contactName];
+                avURL = [NSURL URLWithString:urlString];
+                dat = [NSData dataWithContentsOfURL:avURL options:nil error:&error];
+                [iconCache setObject:dat forKey:contactName];
+                [completedIcons addObject:contactName];
+                if(runLoop)
+                {
+                    //[self updateIcon:contact withData:dat];
+                    [AIUserIcons setServersideIconData:dat forObject:contact notify:0];
+                }
+                else
+                    return;
+            }
+            @catch (...) {
+                NSLog(@"Failed to fetch contact image for '%@'", contactName);
+            }
+            usleep(125000);
+        }
+    }
 }
 
 - (BOOL)groupChatsSupportTopic

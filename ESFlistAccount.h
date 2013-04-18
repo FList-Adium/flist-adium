@@ -23,17 +23,24 @@
  * along with F-List Adium.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#import <Foundation/Foundation.h>
 #import <AdiumLibpurple/CBPurpleAccount.h>
+#import <Adium/AIUserIcons.h>
 
 #define KEY_FLIST_CHARACTER         @"Flist:Character Name"
 #define KEY_FLIST_LOGIN             @"Flist:User Name"
 #define KEY_FLIST_USE_WEBSOCKET		@"Flist:Use Websockets"
 #define KEY_FLIST_SYNC_FRIENDS		@"Flist:Sync Friends"
 #define KEY_FLIST_SYNC_BOOKMARKS	@"Flist:Sync Bookmarks"
+#define KEY_FLIST_SERVER_PORT       @"Flist:Server Port"
+#define KEY_FLIST_SERVER_HOST       @"Flist:Server Address"
 #define KEY_FLIST_DEBUG             @"Flist:Debug Connection"
 
 @interface ESFlistAccount : CBPurpleAccount {
-
+    NSMutableSet *requestedIcons;
+    NSMutableSet *completedIcons;
+    NSMutableArray *iconQueue;
+    BOOL runLoop;
 }
 
 @end

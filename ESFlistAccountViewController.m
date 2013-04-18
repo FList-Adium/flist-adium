@@ -47,6 +47,11 @@
     NSString *login = [account preferenceForKey:KEY_FLIST_LOGIN group:GROUP_ACCOUNT_STATUS];
 	[textField_flistlogin setStringValue:(login ?: @"")];
     
+    NSString *server = [account preferenceForKey:KEY_FLIST_SERVER_HOST group:GROUP_ACCOUNT_STATUS];
+    NSString *port = [account preferenceForKey:KEY_FLIST_SERVER_PORT group:GROUP_ACCOUNT_STATUS];
+	[textField_connectPort setStringValue:(port ?: @"9722")];
+	[textField_connectHost setStringValue:(server ?: @"chat.f-list.net")];
+    
 	[checkBox_useWebsocket setState:[[account preferenceForKey:KEY_FLIST_USE_WEBSOCKET group:GROUP_ACCOUNT_STATUS] boolValue]];
 	[checkBox_syncfriends setState:[[account preferenceForKey:KEY_FLIST_SYNC_FRIENDS group:GROUP_ACCOUNT_STATUS] boolValue]];
 	[checkBox_syncbookmarks setState:[[account preferenceForKey:KEY_FLIST_SYNC_BOOKMARKS group:GROUP_ACCOUNT_STATUS] boolValue]];
@@ -78,6 +83,10 @@
                     forKey:KEY_FLIST_SYNC_BOOKMARKS group:GROUP_ACCOUNT_STATUS];
     [account setPreference:[NSNumber numberWithBool:[checkBox_debug state]]
                     forKey:KEY_FLIST_DEBUG group:GROUP_ACCOUNT_STATUS];
+    [account setPreference:([[textField_connectHost stringValue] length] ? [textField_connectHost stringValue] : @"chat.f-list.net")
+					forKey:KEY_FLIST_SERVER_HOST group:GROUP_ACCOUNT_STATUS];
+    [account setPreference:([[textField_connectPort stringValue] length] ? [textField_connectPort stringValue] : @"9722")
+					forKey:KEY_FLIST_SERVER_PORT group:GROUP_ACCOUNT_STATUS];
         
 }
 
