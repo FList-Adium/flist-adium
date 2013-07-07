@@ -185,15 +185,26 @@ static NSMutableDictionary *iconCache = nil;
     NSString *contactName = [[[contact displayName] lowercaseString] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     if(!contactName)
         return nil;
-    
-    if([iconQueue containsObject:contactName] || [requestedIcons containsObject:contactName])
+    @synchronized(iconQueue)
     {
-        if([completedIcons containsObject:contactName])
+        @synchronized(requestedIcons)
         {
-            return [iconCache objectForKey:contactName];
+            if([iconQueue containsObject:contactName] || [requestedIcons containsObject:contactName])
+            {
+                @synchronized(completedIcons)
+                {
+                    if([completedIcons containsObject:contactName])
+                    {
+                        @synchronized(iconCache)
+                        {
+                            return [iconCache objectForKey:contactName];
+                        }
+                    }
+                }
+            }else{
+                [iconQueue addObject:contact];
+            }
         }
-    }else{
-        [iconQueue addObject:contact];
     }
     return nil;
 }
@@ -203,41 +214,62 @@ static NSMutableDictionary *iconCache = nil;
 {
     while(runLoop)
     {
-        usleep(125000);
-        if([iconQueue count] == 0)
-            continue;
-        AIListContact *contact = [iconQueue objectAtIndex:0];
-        if(!contact)
-            continue;
-        NSString *contactName = [[[contact displayName] lowercaseString] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-        [requestedIcons addObject:contactName];
-        [iconQueue removeObjectAtIndex:0];
-        @synchronized(iconCache)
+        usleep(25000);
+        @synchronized(iconQueue)
         {
-            NSData *dat = [iconCache objectForKey:contactName];
-            if(dat)
+            @synchronized(requestedIcons)
             {
-                [self updateIcon:contact withData:dat];
-                continue;
-            }
-            NSURL *avURL;
-            NSError *error;
-            @try {
-                NSString *urlString = [NSString stringWithFormat: @"http://static.f-list.net/images/avatar/%@.png", contactName];
-                avURL = [NSURL URLWithString:urlString];
-                dat = [NSData dataWithContentsOfURL:avURL options:nil error:&error];
-                [iconCache setObject:dat forKey:contactName];
-                [completedIcons addObject:contactName];
-                if(runLoop)
+                if([iconQueue count] == 0)
+                    continue;
+                AIListContact *contact = [iconQueue objectAtIndex:0];
+                if(!contact)
+                    continue;
+                NSString *contactName = [[[contact displayName] lowercaseString] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                [requestedIcons addObject:contactName];
+                [iconQueue removeObjectAtIndex:0];
+                NSLog(@"Fetching contact image for '%@'", contactName);
+                @synchronized(iconCache)
                 {
-                    //[self updateIcon:contact withData:dat];
-                    [AIUserIcons setServersideIconData:dat forObject:contact notify:0];
+                    NSData *dat = [iconCache objectForKey:contactName];
+                    if(dat)
+                    {
+                        @synchronized(completedIcons)
+                        {
+                            [completedIcons addObject:contactName];
+                        }
+                        [self updateIcon:contact withData:dat];
+                        continue;
+                    }
+                    NSURL *avURL;
+                    NSError *error = nil;
+                    @try {
+                        usleep(100000);
+                        NSString *urlString = [NSString stringWithFormat: @"http://static.f-list.net/images/avatar/%@.png", contactName];
+                        avURL = [NSURL URLWithString:urlString];
+                        dat = [NSData dataWithContentsOfURL:avURL options:nil error:&error];
+                        for(int i=0; error && i < 3; i++)
+                        {
+                            usleep(125000);
+                            NSLog(@"NSError: '%@', Reason: '%@', Try %d", [error localizedDescription], [error localizedFailureReason], i);
+                            dat = [NSData dataWithContentsOfURL:avURL options:nil error:&error];
+                        }
+                        [iconCache setObject:dat forKey:contactName];
+                        @synchronized(completedIcons)
+                        {
+                            [completedIcons addObject:contactName];
+                        }
+                        if(runLoop)
+                        {
+                            //[self updateIcon:contact withData:dat];
+                            [AIUserIcons setServersideIconData:dat forObject:contact notify:0];
+                        }
+                        else
+                            return;
+                    }
+                    @catch (...) {
+                        NSLog(@"Failed to fetch contact image for '%@'", contactName);
+                    }
                 }
-                else
-                    return;
-            }
-            @catch (...) {
-                NSLog(@"Failed to fetch contact image for '%@'", contactName);
             }
         }
     }
@@ -247,5 +279,4 @@ static NSMutableDictionary *iconCache = nil;
 {
     return YES;
 }
-
 @end

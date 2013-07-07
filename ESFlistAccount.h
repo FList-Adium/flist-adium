@@ -26,6 +26,7 @@
 #import <Foundation/Foundation.h>
 #import <AdiumLibpurple/CBPurpleAccount.h>
 #import <Adium/AIUserIcons.h>
+#include <Adium/AIChat.h>
 
 #define KEY_FLIST_CHARACTER         @"Flist:Character Name"
 #define KEY_FLIST_LOGIN             @"Flist:User Name"
