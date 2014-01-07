@@ -52,7 +52,6 @@
 	[textField_connectPort setStringValue:(port ?: @"9722")];
 	[textField_connectHost setStringValue:(server ?: @"chat.f-list.net")];
     
-	[checkBox_useWebsocket setState:[[account preferenceForKey:KEY_FLIST_USE_WEBSOCKET group:GROUP_ACCOUNT_STATUS] boolValue]];
 	[checkBox_syncfriends setState:[[account preferenceForKey:KEY_FLIST_SYNC_FRIENDS group:GROUP_ACCOUNT_STATUS] boolValue]];
 	[checkBox_syncbookmarks setState:[[account preferenceForKey:KEY_FLIST_SYNC_BOOKMARKS group:GROUP_ACCOUNT_STATUS] boolValue]];
 	[checkBox_debug setState:[[account preferenceForKey:KEY_FLIST_DEBUG group:GROUP_ACCOUNT_STATUS] boolValue]];
@@ -75,8 +74,6 @@
     [account setPreference:([[textField_flistlogin stringValue] length] ? [textField_flistlogin stringValue] : nil)
 					forKey:KEY_FLIST_LOGIN group:GROUP_ACCOUNT_STATUS];
     
-    [account setPreference:[NSNumber numberWithBool:[checkBox_useWebsocket state]]
-                    forKey:KEY_FLIST_USE_WEBSOCKET group:GROUP_ACCOUNT_STATUS];
     [account setPreference:[NSNumber numberWithBool:[checkBox_syncfriends state]]
                     forKey:KEY_FLIST_SYNC_FRIENDS group:GROUP_ACCOUNT_STATUS];
     [account setPreference:[NSNumber numberWithBool:[checkBox_syncbookmarks state]]

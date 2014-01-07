@@ -38,7 +38,7 @@
 
 @implementation ESFlistAccount
 
-static NSMutableDictionary *iconCache = nil;
+/*static NSMutableDictionary *iconCache = nil;
 + (void)initialize
 {
     iconCache = [[NSMutableDictionary alloc] init];
@@ -56,7 +56,7 @@ static NSMutableDictionary *iconCache = nil;
 {
     runLoop = NO;
     [super disconnect];
-}
+}*/
 
 - (const char*)protocolPlugin
 {
@@ -166,9 +166,6 @@ static NSMutableDictionary *iconCache = nil;
     int flist_server_port = [[self preferenceForKey:KEY_FLIST_SERVER_PORT group:GROUP_ACCOUNT_STATUS] integerValue];
     purple_account_set_int(acct, "server_port", flist_server_port);
     
-    BOOL flist_use_websocket = [[self preferenceForKey:KEY_FLIST_USE_WEBSOCKET group:GROUP_ACCOUNT_STATUS] boolValue];
-    purple_account_set_bool(acct, "use_websocket_handshake", flist_use_websocket);
-    
     BOOL flist_sync_friends = [[self preferenceForKey:KEY_FLIST_SYNC_FRIENDS group:GROUP_ACCOUNT_STATUS] boolValue];
     purple_account_set_bool(acct, "sync_friends", flist_sync_friends);
     
@@ -179,7 +176,7 @@ static NSMutableDictionary *iconCache = nil;
     purple_account_set_bool(acct, "debug_mode", flist_debug);
 
 }
-
+/*
 - (NSData *)serversideIconDataForContact:(AIListContact *)contact
 {
     NSString *contactName = [[[contact displayName] lowercaseString] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
@@ -273,7 +270,7 @@ static NSMutableDictionary *iconCache = nil;
             }
         }
     }
-}
+}*/
 
 - (BOOL)groupChatsSupportTopic
 {

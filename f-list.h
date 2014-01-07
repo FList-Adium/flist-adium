@@ -244,6 +244,39 @@ enum FListFriendsRequestType_ {
     FLIST_FRIENDS_UPDATE
 };
 
+#define FRAME_CHUNK_LENGTH 1024
+#define HELPER_RECV_BUF_SIZE 1024
+
+#define REQUEST_HAS_CONNECTION (1 << 0)
+#define REQUEST_HAS_UPGRADE (1 << 1)
+#define REQUEST_VALID_STATUS (1 << 2)
+#define REQUEST_VALID_ACCEPT (1 << 3)
+
+#define WS_FRAGMENT_START (1 << 0)
+#define WS_FRAGMENT_FIN (1 << 7)
+
+#define WS_FLAGS_SSL_INIT (1 << 0)
+
+typedef struct _ws_frame {
+    unsigned int fin;
+    unsigned int opcode;
+    unsigned int mask_offset;
+    unsigned int payload_offset;
+    unsigned int rawdata_idx;
+    unsigned int rawdata_sz;
+    unsigned long long payload_len;
+    char *rawdata;
+    struct _ws_frame *next_frame;
+    struct _ws_frame *prev_frame;
+    unsigned char mask[4];
+} ws_frame;
+
+typedef struct _ws_message {
+    unsigned int opcode;
+    unsigned long long payload_len;
+    char *payload;
+} ws_message;
+
 struct FListCharacter_ {
     gchar* name;
     FListGender gender;
@@ -275,6 +308,8 @@ struct FListAccount_ {
     
     PurpleUtilFetchUrlData *url_request;
     gchar *fls_cookie;
+    gchar *b64data;
+    ws_frame *current_frame;
     FListConnectionStatus connection_status;
     
     /* for tickets */
@@ -302,7 +337,6 @@ struct FListAccount_ {
     /* connection options */
     gchar *server_address;
     gint server_port;
-    gboolean use_websocket_handshake; /* enable to use handshake instead of WSH */
 
     /* filter subsystem */
     gchar *filter_channel;

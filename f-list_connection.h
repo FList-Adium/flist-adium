@@ -21,7 +21,9 @@
 #ifndef FLIST_CONNECTION_H
 #define FLIST_CONNECTION_H
 
+
 #include "f-list.h"
+#include <openssl/sha.h>
 
 const gchar *flist_get_ticket(FListAccount *);
 void flist_request(PurpleConnection *, const gchar *, JsonObject *);

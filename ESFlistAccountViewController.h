@@ -30,7 +30,6 @@
 @interface ESFListAccountViewController : AIAccountViewController {
     IBOutlet	NSTextField		*textField_character;
     IBOutlet	NSTextField		*textField_flistlogin;
-	IBOutlet	NSButton		*checkBox_useWebsocket;
 	IBOutlet	NSButton		*checkBox_syncfriends;
 	IBOutlet	NSButton		*checkBox_syncbookmarks;
 	IBOutlet	NSButton		*checkBox_debug;
