@@ -27,7 +27,10 @@
 #import <AdiumLibpurple/CBPurpleAccount.h>
 #import <Adium/AIUserIcons.h>
 #import <Adium/AIListContact.h>
+#import <Adium/AIContentMessage.h>
 #include <Adium/AIChat.h>
+#import <SLPurpleCocoaAdapter.h>
+#import <Adium/AIHTMLDecoder.h>
 #import  "EGOCache.h"
 
 #define KEY_FLIST_CHARACTER         @"Flist:Character Name"

@@ -313,7 +313,7 @@ static gboolean flist_process_LRP(PurpleConnection *pc, JsonObject *root) {
 
     full_message = g_strdup_printf("[b](Roleplay Ad)[/b] %s", message);
     parsed = flist_bbcode_to_html(fla, convo, full_message);
-    purple_debug_info("flist", "Advertisement: %s\n", parsed);
+    purple_debug_info("flist", "Advertisement: %s, Channel: %s, Allowed: %s\n", parsed, channel, show ? "true" : "false");
     if(show) {
         serv_got_chat_in(pc, purple_conv_chat_get_id(PURPLE_CONV_CHAT(convo)), character, flags, parsed, time(NULL));
     }
