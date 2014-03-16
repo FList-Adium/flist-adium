@@ -192,7 +192,7 @@ NSObject *instanceLock;
     {
         NSData *icon = [ESFlistAccount updateIconCache:contact];
         [contact setServersideIconData:icon notify:NotifyLater];
-        usleep(2500);
+        usleep(100000);
     }
 }
 
