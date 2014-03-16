@@ -38,25 +38,8 @@
 
 @implementation ESFlistAccount
 
-/*static NSMutableDictionary *iconCache = nil;
-+ (void)initialize
-{
-    iconCache = [[NSMutableDictionary alloc] init];
-}
-- (void)initAccount
-{
-    [super initAccount];
-    requestedIcons = [[NSMutableSet alloc] init];
-    completedIcons = [[NSMutableSet alloc] init];
-    iconQueue = [[NSMutableArray alloc] init];
-    runLoop = YES;
-    [NSThread detachNewThreadSelector:@selector(iconRequest:) toTarget:self withObject:nil];
-}
--(void) disconnect
-{
-    runLoop = NO;
-    [super disconnect];
-}*/
+static NSObject *lock;
+NSObject *instanceLock;
 
 - (const char*)protocolPlugin
 {
@@ -176,101 +159,72 @@
     purple_account_set_bool(acct, "debug_mode", flist_debug);
 
 }
-/*
+
 - (NSData *)serversideIconDataForContact:(AIListContact *)contact
 {
-    NSString *contactName = [[[contact displayName] lowercaseString] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    if(!contactName)
+    NSString *contactNameKey = [NSString stringWithFormat:@"ContactIcon: %@", [[[contact displayName] lowercaseString] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    if ([[EGOCache globalCache] hasCacheForKey:contactNameKey]) {
+        return [[EGOCache globalCache] dataForKey:contactNameKey];
+    }else{
+        [NSThread detachNewThreadSelector:@selector(actuallyGetIconForContact:) toTarget:self withObject:contact];
         return nil;
-    @synchronized(iconQueue)
-    {
-        @synchronized(requestedIcons)
-        {
-            if([iconQueue containsObject:contactName] || [requestedIcons containsObject:contactName])
-            {
-                @synchronized(completedIcons)
-                {
-                    if([completedIcons containsObject:contactName])
-                    {
-                        @synchronized(iconCache)
-                        {
-                            return [iconCache objectForKey:contactName];
-                        }
-                    }
-                }
-            }else{
-                [iconQueue addObject:contact];
-            }
-        }
     }
-    return nil;
 }
 
-
-- (void)iconRequest:(id) param
+- (void)actuallyGetIconForContact: (AIListContact *)contact
 {
-    while(runLoop)
+    @synchronized(instanceLock)
     {
-        usleep(25000);
-        @synchronized(iconQueue)
-        {
-            @synchronized(requestedIcons)
-            {
-                if([iconQueue count] == 0)
-                    continue;
-                AIListContact *contact = [iconQueue objectAtIndex:0];
-                if(!contact)
-                    continue;
-                NSString *contactName = [[[contact displayName] lowercaseString] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-                [requestedIcons addObject:contactName];
-                [iconQueue removeObjectAtIndex:0];
-                NSLog(@"Fetching contact image for '%@'", contactName);
-                @synchronized(iconCache)
-                {
-                    NSData *dat = [iconCache objectForKey:contactName];
-                    if(dat)
-                    {
-                        @synchronized(completedIcons)
-                        {
-                            [completedIcons addObject:contactName];
-                        }
-                        [self updateIcon:contact withData:dat];
-                        continue;
-                    }
-                    NSURL *avURL;
-                    NSError *error = nil;
-                    @try {
-                        usleep(100000);
-                        NSString *urlString = [NSString stringWithFormat: @"http://static.f-list.net/images/avatar/%@.png", contactName];
-                        avURL = [NSURL URLWithString:urlString];
-                        dat = [NSData dataWithContentsOfURL:avURL options:nil error:&error];
-                        for(int i=0; error && i < 3; i++)
-                        {
-                            usleep(125000);
-                            NSLog(@"NSError: '%@', Reason: '%@', Try %d", [error localizedDescription], [error localizedFailureReason], i);
-                            dat = [NSData dataWithContentsOfURL:avURL options:nil error:&error];
-                        }
-                        [iconCache setObject:dat forKey:contactName];
-                        @synchronized(completedIcons)
-                        {
-                            [completedIcons addObject:contactName];
-                        }
-                        if(runLoop)
-                        {
-                            //[self updateIcon:contact withData:dat];
-                            [AIUserIcons setServersideIconData:dat forObject:contact notify:0];
-                        }
-                        else
-                            return;
-                    }
-                    @catch (...) {
-                        NSLog(@"Failed to fetch contact image for '%@'", contactName);
-                    }
-                }
-            }
+        NSData *icon = [ESFlistAccount updateIconCache:contact];
+        [contact setServersideIconData:icon notify:NotifyLater];
+        usleep(2500);
+    }
+}
+
++(NSData *)getIconFromCache:(AIListContact *)contact
+{
+    NSString *contactNameKey = [NSString stringWithFormat:@"ContactIcon: %@", [[[contact displayName] lowercaseString] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    @synchronized(lock)
+    {
+        if ([[EGOCache globalCache] hasCacheForKey:contactNameKey]) {
+            return [[EGOCache globalCache] dataForKey:contactNameKey];
+        }else{
+            return nil;
         }
     }
-}*/
+}
+
++(NSData *)updateIconCache:(AIListContact *)contact
+{
+    NSString *contactNameKey = [NSString stringWithFormat:@"ContactIcon: %@", [[[contact displayName] lowercaseString] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    @synchronized(lock)
+    {
+        if ([[EGOCache globalCache] hasCacheForKey:contactNameKey]) {
+            return [[EGOCache globalCache] dataForKey:contactNameKey];
+        }else{
+            NSData *dat = [ESFlistAccount getIconForContact:contact];
+            [[EGOCache globalCache] setData:dat forKey:contactNameKey];
+            return dat;
+        }
+    }
+}
+
++(void)setIconDataInCache:(NSData *)icon forContact:(AIListContact *)contact
+{
+    NSString *contactNameKey = [NSString stringWithFormat:@"ContactIcon: %@", [[[contact displayName] lowercaseString] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    @synchronized(lock)
+    {
+        if (![[EGOCache globalCache] hasCacheForKey:contactNameKey]) {
+            [[EGOCache globalCache] setData:icon forKey:contactNameKey];
+        }
+    }
+}
+
++ (NSData *) getIconForContact: (AIListContact *)contact
+{
+    NSString *contactName = [[[contact displayName] lowercaseString] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    return [NSData dataWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://static.f-list.net/images/avatar/%@.png", contactName]]];
+}
 
 - (BOOL)groupChatsSupportTopic
 {
