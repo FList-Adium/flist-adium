@@ -26,7 +26,9 @@
 #import <Foundation/Foundation.h>
 #import <AdiumLibpurple/CBPurpleAccount.h>
 #import <Adium/AIUserIcons.h>
+#import <Adium/AIListContact.h>
 #include <Adium/AIChat.h>
+#import  "EGOCache.h"
 
 #define KEY_FLIST_CHARACTER         @"Flist:Character Name"
 #define KEY_FLIST_LOGIN             @"Flist:User Name"
@@ -37,10 +39,9 @@
 #define KEY_FLIST_DEBUG             @"Flist:Debug Connection"
 
 @interface ESFlistAccount : CBPurpleAccount {
-/*    NSMutableSet *requestedIcons;
-    NSMutableSet *completedIcons;
-    NSMutableArray *iconQueue;
-    BOOL runLoop;*/
 }
+
++ (NSData *) getIconFromCache: (AIListContact *)contact;
++ (void) setIconDataInCache: (NSData *)icon forContact: (AIListContact *)contact;
 
 @end
