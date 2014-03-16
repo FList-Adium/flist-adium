@@ -116,6 +116,7 @@
 		3ECF4AB2161BBB4E00BCFA2F /* ESFlistChatJoinView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ESFlistChatJoinView.xib; sourceTree = "<group>"; };
 		E2498DA118D5D21300154B32 /* EGOCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EGOCache.h; sourceTree = "<group>"; };
 		E2498DA218D5D21300154B32 /* EGOCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EGOCache.m; sourceTree = "<group>"; };
+		E258E16B18D61E4000F93C72 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		E2A2615F16FA4F2D00AAB9BF /* ESFlistRoom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESFlistRoom.h; sourceTree = "<group>"; };
 		E2A2616016FA4F2D00AAB9BF /* ESFlistRoom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ESFlistRoom.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -215,6 +216,7 @@
 		3E6CD6A5164C60BC007D7D88 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				E258E16B18D61E4000F93C72 /* README.md */,
 				3E6CD6A0164C5EEE007D7D88 /* flist-small.png */,
 				3E5D2A14160BF27D00234193 /* flist.png */,
 			);
