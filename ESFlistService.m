@@ -41,6 +41,7 @@ void extern *purple_init_flist_plugin();
 
 @implementation ESFlistService
 
+#pragma mark - Plugin Setup
 - (void) installPlugin
 {
     purple_init_flist_plugin();
@@ -61,7 +62,8 @@ void extern *purple_init_flist_plugin();
 {
 }
 
-//Account Creation
+#pragma mark - Obj-C/UI glue
+
 - (Class)accountClass{
     return [ESFlistAccount class];
 }
@@ -74,12 +76,12 @@ void extern *purple_init_flist_plugin();
     return [ESFlistChatJoinViewController joinChatView];
 }
 
+#pragma mark - Service Info
+
 - (NSString *)UIDPlaceholder
 {
     return @"f-list";
 }
-
-//Service Description
 - (NSString *)serviceCodeUniqueID{
     return @"libpurple-flist";
 }
@@ -152,6 +154,7 @@ void extern *purple_init_flist_plugin();
                                 forService:self];
 }
 
+#pragma mark - Icon Data
 
 /*!
  * @brief Default icon

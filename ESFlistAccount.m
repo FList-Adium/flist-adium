@@ -38,8 +38,12 @@
 
 @implementation ESFlistAccount
 
+#pragma mark - Local Locks
+
 static NSObject *lock;
 NSObject *instanceLock;
+
+#pragma mark - Protocol Info
 
 - (const char*)protocolPlugin
 {
@@ -47,6 +51,11 @@ NSObject *instanceLock;
 }
 
 - (BOOL)disconnectOnFastUserSwitch
+{
+    return YES;
+}
+
+- (BOOL)groupChatsSupportTopic
 {
     return YES;
 }
@@ -120,6 +129,8 @@ NSObject *instanceLock;
     [super autoReconnectAfterDelay:20];
 }
 
+#pragma mark - Formatting/Parsing
+
 - (NSAttributedString *)statusMessageForPurpleBuddy:(PurpleBuddy *)buddy
 {
     char *msg = (char *)flist_get_status_text(buddy);
@@ -137,6 +148,8 @@ NSObject *instanceLock;
     return [self preferenceForKey:KEY_FLIST_CHARACTER group:GROUP_ACCOUNT_STATUS];
     
 }
+
+#pragma mark - Setup
 
 -(void)configurePurpleAccount{
     [super configurePurpleAccount];
@@ -159,6 +172,8 @@ NSObject *instanceLock;
     purple_account_set_bool(acct, "debug_mode", flist_debug);
 
 }
+
+#pragma mark - Icon Methods
 
 - (NSData *)serversideIconDataForContact:(AIListContact *)contact
 {
@@ -226,8 +241,52 @@ NSObject *instanceLock;
     return [NSData dataWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://static.f-list.net/images/avatar/%@.png", contactName]]];
 }
 
-- (BOOL)groupChatsSupportTopic
+#pragma mark - Command Echo Override
+
+- (NSString *)encodedAttributedStringForSendingContentMessage:(AIContentMessage *)inContentMessage
 {
-    return YES;
+    
+	NSString	*encodedString = nil;
+	NSString	*messageString = inContentMessage.message.string;
+	BOOL		didCommand = [self.purpleAdapter attemptPurpleCommandOnMessage:messageString
+                                                             fromAccount:(AIAccount *)inContentMessage.source
+                                                                  inChat:inContentMessage.chat];
+    
+    // Returns true if this is sending a /ad command
+    BOOL isAd = ([messageString rangeOfString:@"/ad " options:(NSCaseInsensitiveSearch | NSAnchoredSearch)].location == 0);
+	
+    // If it's an ad, we gotta write it manually.
+	if (isAd) {
+        // Get the attributed string.
+		NSAttributedString *messageAttributedString = inContentMessage.message;
+        
+        // Clip off the command.
+        messageAttributedString = [messageAttributedString attributedSubstringFromRange:NSMakeRange([@"/ad " length],
+                                                                                                    messageAttributedString.length - [@"/ad " length])];
+        
+        // Dummy range to get the default attributes at the beginning.
+        NSRange dummy = NSMakeRange(0,0);
+        
+        // Range encompassing the entire prepended portion.
+        NSRange len = NSMakeRange(0,14);
+        
+        // (to be bolded) string that's prepended to an ad.
+		NSMutableAttributedString *prep = [[NSMutableAttributedString alloc] initWithString:@"(Roleplay Ad) " attributes:[messageAttributedString attributesAtIndex:0 effectiveRange:&dummy]];
+        
+        // Bold it!
+        [prep addAttribute:NSFontAttributeName value:[NSFont boldSystemFontOfSize:0] range:len];
+        
+        // Slap the ad on.
+        [prep appendAttributedString:messageAttributedString];
+        
+        // Manually write to client window
+        [self _receivedMessage:prep
+                            inChat:inContentMessage.chat
+                   fromListContact:inContentMessage.source
+                             flags:PURPLE_MESSAGE_SEND
+                              date:inContentMessage.date];
+	}
+	
+	return (didCommand ? nil : [super encodedAttributedStringForSendingContentMessage:inContentMessage]);
 }
 @end

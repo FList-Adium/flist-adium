@@ -30,6 +30,9 @@
 @end
 
 @implementation ESFlistChatJoinViewController
+
+#pragma mark - Allocation/Initialization
+
 - (id) init
 {
     self = [super init];
@@ -39,6 +42,16 @@
     }
     return self;
 }
+
+-(void) dealloc
+{
+    if(roomList)
+        purple_roomlist_unref(roomList);
+    [roomListArray release];
+    [super dealloc];
+}
+
+#pragma mark - UI Glue
 - (NSString *)nibName
 {
 	return @"ESFlistChatJoinView";
@@ -49,14 +62,7 @@
     [channelListTable setDoubleAction:@selector(joinChat:)];
 }
 
-- (void) setRoomListArray:(NSMutableArray *)a
-{
-    if(a==roomListArray)
-        return;
-    [roomListArray release];
-    [a retain];
-    roomListArray = a;
-}
+#pragma mark - Adium Glue
 
 - (void)configureForAccount:(AIAccount *)inAccount
 {
@@ -71,6 +77,18 @@
     [NSThread detachNewThreadSelector:@selector(populateRoomList:) toTarget:self withObject:nil];
 }
 
+#pragma mark - Setters/Getters
+
+- (void) setRoomListArray:(NSMutableArray *)a
+{
+    if(a==roomListArray)
+        return;
+    [roomListArray release];
+    [a retain];
+    roomListArray = a;
+}
+
+#pragma mark - Model-View Shit
 // Populate the dropdown...
 - (void)populateRoomList:(id)param
 {
@@ -103,32 +121,7 @@
     [roomListProgressIndicator stopAnimation:self];
 }
 
-- (void)joinChatWithAccount:(AIAccount *)inAccount
-{
-	NSString			*channel;
-	NSMutableDictionary	*chatCreationInfo;
-	
-	//Obtain room and exchange from the view
-	channel = [channelTextField stringValue];
-    [channel retain];
-	
-	if (channel && [channel length]) {
-		//The chatCreationInfo has keys corresponding to the GHashTable keys and values to match them.
-		chatCreationInfo = [NSMutableDictionary dictionaryWithObject:channel
-															  forKey:@"channel"];
-        
-		[self doJoinChatWithName:channel
-					   onAccount:inAccount
-				chatCreationInfo:chatCreationInfo
-				invitingContacts:nil
-		   withInvitationMessage:nil];
-		
-	} else {
-		NSLog(@"Error: No channel specified.");
-	}
-    [channel release];
-	
-}
+#pragma mark - Validation
 
 //Entered text is changing
 - (void)controlTextDidChange:(NSNotification *)notification
@@ -159,6 +152,8 @@
 	}
 }
 
+#pragma mark - Action Methods
+
 - (void)joinChat:(id)param
 {
     // Actually just sends the enter key code.
@@ -166,11 +161,30 @@
     [delegate performKeyEquivalent: [NSEvent keyEventWithType:NSKeyDown location:NSZeroPoint modifierFlags:(NSControlKeyMask | NSCommandKeyMask) timestamp:[[NSProcessInfo processInfo] systemUptime] windowNumber:windowNumber context:[NSGraphicsContext currentContext] characters:'\n' charactersIgnoringModifiers:'\n' isARepeat:NO keyCode:36]];
 }
 
--(void) dealloc
+- (void)joinChatWithAccount:(AIAccount *)inAccount
 {
-    if(roomList)
-        purple_roomlist_unref(roomList);
-    [roomListArray release];
-    [super dealloc];
+	NSString			*channel;
+	NSMutableDictionary	*chatCreationInfo;
+	
+	//Obtain room and exchange from the view
+	channel = [channelTextField stringValue];
+    [channel retain];
+	
+	if (channel && [channel length]) {
+		//The chatCreationInfo has keys corresponding to the GHashTable keys and values to match them.
+		chatCreationInfo = [NSMutableDictionary dictionaryWithObject:channel
+															  forKey:@"channel"];
+        
+		[self doJoinChatWithName:channel
+					   onAccount:inAccount
+				chatCreationInfo:chatCreationInfo
+				invitingContacts:nil
+		   withInvitationMessage:nil];
+		
+	} else {
+		NSLog(@"Error: No channel specified.");
+	}
+    [channel release];
+	
 }
 @end

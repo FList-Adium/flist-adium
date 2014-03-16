@@ -638,8 +638,12 @@ PurpleCmdRet flist_channel_send_ad(PurpleConversation *convo, const gchar *cmd, 
     purple_debug(PURPLE_DEBUG_INFO, "flist", "Writing: %s\n", bbcode_message);
     purple_debug(PURPLE_DEBUG_INFO, "flist", "INFO: channel(%s), id(%i), flags(%i)\n", channel, PURPLE_CONV_CHAT(convo)->id, PURPLE_MESSAGE_SEND);
 
-    serv_got_chat_in(pc, PURPLE_CONV_CHAT(convo)->id, fla->proper_character,
-            PURPLE_MESSAGE_SEND, bbcode_message, time(NULL));
+    // Removed since the ad is manually written to the client window.
+    /*
+     * serv_got_chat_in(pc, PURPLE_CONV_CHAT(convo)->id, fla->proper_character, PURPLE_MESSAGE_SEND,
+     *   bbcode_message, time(NULL));
+     */
+
 
     
     //TODO: track error messages
