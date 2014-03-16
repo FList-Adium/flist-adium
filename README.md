@@ -70,8 +70,8 @@ The plugin is located by default in a 'Derived Objects' directory within the Lib
 
 ## Credits
 
-Uses [enormego/EGOCache](https://github.com/enormego/EGOCache) for avatar data caching.
+Uses [EGOCache](https://github.com/enormego/EGOCache) for avatar data caching.
 
 Libpurple code is from [flist-pidgin](https://code.google.com/p/flist-pidgin/).
 
-Websocket code is an edited version of [payden/libwsclient](https://github.com/payden/libwsclient).
+Websocket code is an edited version of [libwsclient](https://github.com/payden/libwsclient).
