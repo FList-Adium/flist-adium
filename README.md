@@ -48,7 +48,8 @@ This plugin is made for use with Adium, a multi-protocol IM client for Mac OS X.
 + Initial versions done by Maou.
 
 ## Known Issues
-+ None at the moment... Please report any if you do see them!
+
++ Links to channels within chats don't work. This is done via a Pidgin-specific API in the Pidgin plugin, and I'm not sure how to do something like it in Adium. You can still join the channel by finding it in the list of channels for the Join Channel window.
 
 ## Installation
 Open the plugin bundle. Adium should automatically open and install it for you.
