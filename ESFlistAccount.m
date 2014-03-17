@@ -159,7 +159,7 @@ NSObject *instanceLock;
     const char *flist_server_address = [[self preferenceForKey:KEY_FLIST_SERVER_HOST group:GROUP_ACCOUNT_STATUS] UTF8String];
     purple_account_set_string(acct, "server_address", flist_server_address);
     
-    int flist_server_port = [[self preferenceForKey:KEY_FLIST_SERVER_PORT group:GROUP_ACCOUNT_STATUS] integerValue];
+    int flist_server_port = (int) [[self preferenceForKey:KEY_FLIST_SERVER_PORT group:GROUP_ACCOUNT_STATUS] integerValue];
     purple_account_set_int(acct, "server_port", flist_server_port);
     
     BOOL flist_sync_friends = [[self preferenceForKey:KEY_FLIST_SYNC_FRIENDS group:GROUP_ACCOUNT_STATUS] boolValue];
@@ -245,8 +245,6 @@ NSObject *instanceLock;
 
 - (NSString *)encodedAttributedStringForSendingContentMessage:(AIContentMessage *)inContentMessage
 {
-    
-	NSString	*encodedString = nil;
 	NSString	*messageString = inContentMessage.message.string;
 	BOOL		didCommand = [self.purpleAdapter attemptPurpleCommandOnMessage:messageString
                                                              fromAccount:(AIAccount *)inContentMessage.source
@@ -286,7 +284,11 @@ NSObject *instanceLock;
                              flags:PURPLE_MESSAGE_SEND
                               date:inContentMessage.date];
 	}
-	
 	return (didCommand ? nil : [super encodedAttributedStringForSendingContentMessage:inContentMessage]);
+}
+// This enables the roll and dice commands to work properly.
+- (BOOL)shouldDisplayOutgoingMUCMessages
+{
+	return NO;
 }
 @end

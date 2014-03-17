@@ -556,11 +556,26 @@ PurpleCmdRet flist_roll_dice(PurpleConversation *convo, const gchar *cmd, gchar 
     JsonObject *json = json_object_new();
     const gchar *channel = purple_conversation_get_name(convo);
     json_object_set_string_member(json, "channel", channel);
-    json_object_set_string_member(json, "dice", args[0]); //TODO: check for proper dice format: xdy
+    if(args[0])
+        json_object_set_string_member(json, "dice", args[0]); //TODO: check for proper dice format: xdy
+    else
+        json_object_set_string_member(json, "dice", "1d10");
     flist_request(pc, FLIST_ROLL_DICE, json);
     json_object_unref(json);
     return PURPLE_CMD_STATUS_OK;
 }
+
+PurpleCmdRet flist_roll_dice_default(PurpleConversation *convo, const gchar *cmd, gchar **args, gchar **error, void *data) {
+    gchar *arg = "1d10";
+    return flist_roll_dice(convo, cmd, &arg, error, data);
+}
+
+
+PurpleCmdRet flist_spin_bottle(PurpleConversation *convo, const gchar *cmd, gchar **args, gchar **error, void *data) {
+    gchar *arg = "bottle";
+    return flist_roll_dice(convo, cmd, &arg, error, data);
+}
+
 
 PurpleCmdRet flist_priv_cmd(PurpleConversation *convo, const gchar *cmd, gchar **args, gchar **error, void *data) {
     PurpleConnection *pc = purple_conversation_get_gc(convo);
@@ -733,9 +748,13 @@ void flist_init_commands() {
 
     purple_cmd_register("invite", "s", PURPLE_CMD_P_PRPL, channel_flags,
         FLIST_PLUGIN_ID, flist_channel_invite_cmd, "invite &lt;character&gt;: Invites a user to the current channel.", NULL);
-
+    
     purple_cmd_register("roll", "s", PURPLE_CMD_P_PRPL, channel_flags,
-        FLIST_PLUGIN_ID, flist_roll_dice, "roll &lt;dice&gt;: Rolls dice.", NULL);
+                        FLIST_PLUGIN_ID, flist_roll_dice, "roll &lt;dice&gt;: Rolls dice.", NULL);
+    purple_cmd_register("roll", "", PURPLE_CMD_P_PRPL, channel_flags,
+                        FLIST_PLUGIN_ID, flist_roll_dice_default, "roll: Rolls 1d10 dice.", NULL);
+    purple_cmd_register("bottle", "", PURPLE_CMD_P_PRPL, channel_flags,
+                        FLIST_PLUGIN_ID, flist_spin_bottle, "bottle: Spins the bottle.", NULL);
     
     purple_cmd_register("ad", "s", PURPLE_CMD_P_PRPL, channel_flags,
         FLIST_PLUGIN_ID, flist_channel_send_ad, "ad &lt;message&gt;: Sends a \"looking for role play\" ad.", NULL);
