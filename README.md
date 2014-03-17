@@ -48,7 +48,7 @@ This plugin is made for use with Adium, a multi-protocol IM client for Mac OS X.
 + Initial versions done by Maou.
 
 ## Known Issues
-+ Occasional crashes occur when opening/closing the roomlist view in rapid succession. Not sure why this is at the moment.
++ None at the moment... Please report any if you do see them!
 
 ## Installation
 Open the plugin bundle. Adium should automatically open and install it for you.
