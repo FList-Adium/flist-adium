@@ -5,34 +5,34 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>A79C5369-9840-4267-9FD1-D3D1AF5D192C</string>
+	<string>A08988ED-0F60-43DF-ADD4-A6E4BB04C69E</string>
 	<key>IDESourceControlProjectName</key>
 	<string>F-Chat</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>9C006161-9671-480D-8310-9ABEC45AF4C0</key>
-		<string>https://code.google.com/p/flist-adium/</string>
+		<key>36ACE610-8979-4D7B-A43E-A4BA0E6258ED</key>
+		<string>ssh://github.com/FList-Adium/flist-adium.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>F-Chat.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>9C006161-9671-480D-8310-9ABEC45AF4C0</key>
+		<key>36ACE610-8979-4D7B-A43E-A4BA0E6258ED</key>
 		<string>../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>https://code.google.com/p/flist-adium/</string>
+	<string>ssh://github.com/FList-Adium/flist-adium.git</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>110</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>9C006161-9671-480D-8310-9ABEC45AF4C0</string>
+	<string>36ACE610-8979-4D7B-A43E-A4BA0E6258ED</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>9C006161-9671-480D-8310-9ABEC45AF4C0</string>
+			<string>36ACE610-8979-4D7B-A43E-A4BA0E6258ED</string>
 			<key>IDESourceControlWCCName</key>
 			<string>flist-adium</string>
 		</dict>

@@ -523,9 +523,9 @@ typedef gboolean(*flist_cb_fn)(PurpleConnection *, JsonObject *);
 static gboolean flist_process_IDN(PurpleConnection *pc, JsonObject *root) {
     FListAccount *fla = pc->proto_data;
     const gchar *character;
-    fla->connection_status = FLIST_ONLINE;
     character = json_object_get_string_member(root, "character");
     fla->proper_character = g_strdup(character);
+    fla->connection_status = FLIST_ONLINE;
     return TRUE;
 }
 static gboolean flist_process_PIN(PurpleConnection *pc, JsonObject *root) {

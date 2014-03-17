@@ -307,6 +307,10 @@ void flist_request(PurpleConnection *pc, const gchar* type, JsonObject *object) 
     {
         purple_debug_error("flist", "Attempted to send request during handshake!");
         goto cleanup;
+    }else if(fla->connection_status != FLIST_ONLINE && 0 != strcmp(type,"IDN"))
+    {
+        purple_debug_error("flist", "Attempted to send request before completion of login!");
+        goto cleanup;
     }
     
     // Check if we have a JSON object to encode.
@@ -393,6 +397,7 @@ void flist_request(PurpleConnection *pc, const gchar* type, JsonObject *object) 
     
     // If there's an error, disconnect.
     if(i < 0) {
+        printf("type: %s", type);
         purple_connection_error_reason(pc, PURPLE_CONNECTION_ERROR_NETWORK_ERROR, "Failed to send outbound frames.");
     }
 cleanup:
@@ -814,11 +819,6 @@ void flist_connected(gpointer user_data, int fd, const gchar *err) {
     purple_debug_info("flist", "Sent handshake...");
     fla->connection_status = FLIST_HANDSHAKE;
     g_free(headers);
-    /*} else {
-     flist_request(fla->pc, "WSH", NULL);
-     fla->connection_status = FLIST_IDENTIFY;
-     // Deprecated //
-     }*/
     
 }
 
