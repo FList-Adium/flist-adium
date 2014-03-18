@@ -47,6 +47,7 @@
 		3ECF4AB3161BBB4F00BCFA2F /* ESFlistChatJoinView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3ECF4AB2161BBB4E00BCFA2F /* ESFlistChatJoinView.xib */; };
 		E2498DA318D5D21300154B32 /* EGOCache.m in Sources */ = {isa = PBXBuildFile; fileRef = E2498DA218D5D21300154B32 /* EGOCache.m */; };
 		E2A2616116FA4F2D00AAB9BF /* ESFlistRoom.m in Sources */ = {isa = PBXBuildFile; fileRef = E2A2616016FA4F2D00AAB9BF /* ESFlistRoom.m */; };
+		E2A91F4218D8C0EB000EB026 /* f-list_adium.c in Sources */ = {isa = PBXBuildFile; fileRef = E2A91F4118D8C0EB000EB026 /* f-list_adium.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -119,6 +120,8 @@
 		E258E16B18D61E4000F93C72 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		E2A2615F16FA4F2D00AAB9BF /* ESFlistRoom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESFlistRoom.h; sourceTree = "<group>"; };
 		E2A2616016FA4F2D00AAB9BF /* ESFlistRoom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ESFlistRoom.m; sourceTree = "<group>"; };
+		E2A91F4118D8C0EB000EB026 /* f-list_adium.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "f-list_adium.c"; sourceTree = "<group>"; };
+		E2A91F4318D8C1E7000EB026 /* f-list_adium.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "f-list_adium.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -228,6 +231,8 @@
 			children = (
 				3E5D27E5160BD18E00234193 /* f-list_admin.c */,
 				3E5D27E6160BD18E00234193 /* f-list_admin.h */,
+				E2A91F4118D8C0EB000EB026 /* f-list_adium.c */,
+				E2A91F4318D8C1E7000EB026 /* f-list_adium.h */,
 				3E5D27E7160BD18E00234193 /* f-list_autobuddy.c */,
 				3E5D27E8160BD18E00234193 /* f-list_autobuddy.h */,
 				3E5D27E9160BD18E00234193 /* f-list_bbcode.c */,
@@ -369,6 +374,7 @@
 				3E5D280E160BD18E00234193 /* f-list_friends.c in Sources */,
 				E2498DA318D5D21300154B32 /* EGOCache.m in Sources */,
 				3E5D280F160BD18E00234193 /* f-list_http.c in Sources */,
+				E2A91F4218D8C0EB000EB026 /* f-list_adium.c in Sources */,
 				3E5D2810160BD18E00234193 /* f-list_icon.c in Sources */,
 				3E5D2811160BD18E00234193 /* f-list_json.c in Sources */,
 				3E5D2812160BD18E00234193 /* f-list_kinks.c in Sources */,

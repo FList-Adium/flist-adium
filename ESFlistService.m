@@ -36,6 +36,7 @@
 #import "ESFlistAccount.h"
 #import "ESFlistService.h"
 #import "f-list.h"
+#import "f-list_adium.h"
 
 void extern *purple_init_flist_plugin();
 
@@ -45,6 +46,10 @@ void extern *purple_init_flist_plugin();
 - (void) installPlugin
 {
     purple_init_flist_plugin();
+    CFStringRef bundleID = (CFStringRef)[[NSBundle mainBundle] bundleIdentifier];
+    LSSetDefaultHandlerForURLScheme(CFSTR("flistc"), bundleID);
+    LSSetDefaultHandlerForURLScheme(CFSTR("flistsfc"), bundleID);
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(urlRequest:) name:@"AIURLHandleNotification" object:nil];
     [ESFlistService registerService];
 }
 
@@ -60,6 +65,25 @@ void extern *purple_init_flist_plugin();
 
 - (void) uninstallPlugin
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+#pragma mark - URL Handling
+- (void)urlRequest:(NSNotification *)notification
+{
+    NSString *urlString = notification.object;
+	NSURL *url = [NSURL URLWithString:urlString];
+    if(url)
+    {
+        NSString *proto = [url scheme];
+        if([proto isEqualToString:@"flistc"])
+        {
+            flist_channel_activate_real([[url host] UTF8String], [[[url path] substringFromIndex:1] UTF8String]);
+        }else if([proto isEqualToString:@"flistsfc"])
+        {
+            flist_staff_activate_real([[url host] UTF8String], [[[url path] substringFromIndex:1] UTF8String]);
+        }
+    }
 }
 
 #pragma mark - Obj-C/UI glue

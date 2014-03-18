@@ -177,13 +177,13 @@ NSObject *instanceLock;
 
 - (NSData *)serversideIconDataForContact:(AIListContact *)contact
 {
-    NSString *contactNameKey = [NSString stringWithFormat:@"ContactIcon: %@", [[[contact displayName] lowercaseString] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    /*NSString *contactNameKey = [NSString stringWithFormat:@"ContactIcon: %@", [[[contact displayName] lowercaseString] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     if ([[EGOCache globalCache] hasCacheForKey:contactNameKey]) {
         return [[EGOCache globalCache] dataForKey:contactNameKey];
-    }else{
+    }else{*/
         [NSThread detachNewThreadSelector:@selector(actuallyGetIconForContact:) toTarget:self withObject:contact];
         return nil;
-    }
+    //}
 }
 
 - (void)actuallyGetIconForContact: (AIListContact *)contact
@@ -191,7 +191,7 @@ NSObject *instanceLock;
     @synchronized(instanceLock)
     {
         NSData *icon = [ESFlistAccount updateIconCache:contact];
-        [contact setServersideIconData:icon notify:NotifyLater];
+        [contact setServersideIconData:icon notify:NotifyNow];
         usleep(100000);
     }
 }
