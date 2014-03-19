@@ -9,6 +9,7 @@ This plugin is made for use with Adium, a multi-protocol IM client for Mac OS X.
 
 + Removed EGOCache; incompatible with 10.6
 + Fixed some memory management issues with 10.6
++ Added a search field to filter Room List
 
 ### 1.7.1
 
