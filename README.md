@@ -5,6 +5,11 @@
 This plugin is made for use with Adium, a multi-protocol IM client for Mac OS X. You can find it [here](http://www.adium.im).
 
 ## Version History
+### 1.7.2
+
++ Removed EGOCache; incompatible with 10.6
++ Fixed some memory management issues with 10.6
+
 ### 1.7.1
 
 + Fixed /bottle and /roll commands

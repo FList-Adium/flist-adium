@@ -36,6 +36,10 @@
 #import "ESFlistAccount.h"
 #import "ESFlistService.h"
 
+@interface CBPurpleAccount ()
+- (void)_receivedMessage:(NSAttributedString *)attributedMessage inChat:(AIChat *)chat fromListContact:(AIListContact *)sourceContact flags:(PurpleMessageFlags)flags date:(NSDate *)date;
+@end
+
 @implementation ESFlistAccount
 
 #pragma mark - Local Locks
@@ -136,7 +140,7 @@ NSObject *instanceLock;
     char *msg = (char *)flist_get_status_text(buddy);
     if (msg != NULL)
     {
-        return [[NSAttributedString alloc] initWithString:[NSString stringWithUTF8String:msg]];
+        return [[[NSAttributedString alloc] initWithString:[NSString stringWithUTF8String:msg]] autorelease];
     }
     else
         return nil;
@@ -181,8 +185,9 @@ NSObject *instanceLock;
     if ([[EGOCache globalCache] hasCacheForKey:contactNameKey]) {
         return [[EGOCache globalCache] dataForKey:contactNameKey];
     }else{*/
-        [NSThread detachNewThreadSelector:@selector(actuallyGetIconForContact:) toTarget:self withObject:contact];
-        return nil;
+    [contact retain];
+    [NSThread detachNewThreadSelector:@selector(actuallyGetIconForContact:) toTarget:self withObject:contact];
+    return nil;
     //}
 }
 
@@ -190,52 +195,15 @@ NSObject *instanceLock;
 {
     @synchronized(instanceLock)
     {
-        NSData *icon = [ESFlistAccount updateIconCache:contact];
+        NSString *contactName = [[[contact displayName] lowercaseString] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        NSData *icon = [NSData dataWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://static.f-list.net/images/avatar/%@.png", contactName]]];
         [contact setServersideIconData:icon notify:NotifyNow];
         usleep(100000);
     }
+    [contact release];
 }
 
-+(NSData *)getIconFromCache:(AIListContact *)contact
-{
-    NSString *contactNameKey = [NSString stringWithFormat:@"ContactIcon: %@", [[[contact displayName] lowercaseString] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-    @synchronized(lock)
-    {
-        if ([[EGOCache globalCache] hasCacheForKey:contactNameKey]) {
-            return [[EGOCache globalCache] dataForKey:contactNameKey];
-        }else{
-            return nil;
-        }
-    }
-}
-
-+(NSData *)updateIconCache:(AIListContact *)contact
-{
-    NSString *contactNameKey = [NSString stringWithFormat:@"ContactIcon: %@", [[[contact displayName] lowercaseString] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-    @synchronized(lock)
-    {
-        if ([[EGOCache globalCache] hasCacheForKey:contactNameKey]) {
-            return [[EGOCache globalCache] dataForKey:contactNameKey];
-        }else{
-            NSData *dat = [ESFlistAccount getIconForContact:contact];
-            [[EGOCache globalCache] setData:dat forKey:contactNameKey];
-            return dat;
-        }
-    }
-}
-
-+(void)setIconDataInCache:(NSData *)icon forContact:(AIListContact *)contact
-{
-    NSString *contactNameKey = [NSString stringWithFormat:@"ContactIcon: %@", [[[contact displayName] lowercaseString] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-    @synchronized(lock)
-    {
-        if (![[EGOCache globalCache] hasCacheForKey:contactNameKey]) {
-            [[EGOCache globalCache] setData:icon forKey:contactNameKey];
-        }
-    }
-}
-
-+ (NSData *) getIconForContact: (AIListContact *)contact
+- (NSData *) getIconForContact: (AIListContact *)contact
 {
     NSString *contactName = [[[contact displayName] lowercaseString] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     return [NSData dataWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://static.f-list.net/images/avatar/%@.png", contactName]]];
@@ -283,9 +251,17 @@ NSObject *instanceLock;
                    fromListContact:inContentMessage.source
                              flags:PURPLE_MESSAGE_SEND
                               date:inContentMessage.date];
+        [prep release];
 	}
 	return (didCommand ? nil : [super encodedAttributedStringForSendingContentMessage:inContentMessage]);
 }
+
+- (void)_receivedMessage:(NSAttributedString *)attributedMessage inChat:(AIChat *)chat fromListContact:(AIListContact *)sourceContact flags:(PurpleMessageFlags)flags date:(NSDate *)date
+{
+    [super _receivedMessage:(NSAttributedString *)attributedMessage inChat:(AIChat *)chat fromListContact:(AIListContact *)sourceContact flags:(PurpleMessageFlags)flags date:(NSDate *)date];
+}
+
+
 // This enables the roll and dice commands to work properly.
 - (BOOL)shouldDisplayOutgoingMUCMessages
 {

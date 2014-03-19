@@ -31,7 +31,6 @@
 #import <Adium/AIChat.h>
 #import <SLPurpleCocoaAdapter.h>
 #import <Adium/AIHTMLDecoder.h>
-#import  "EGOCache.h"
 
 #define KEY_FLIST_CHARACTER         @"Flist:Character Name"
 #define KEY_FLIST_LOGIN             @"Flist:User Name"
@@ -43,8 +42,5 @@
 
 @interface ESFlistAccount : CBPurpleAccount {
 }
-
-+ (NSData *) getIconFromCache: (AIListContact *)contact;
-+ (void) setIconDataInCache: (NSData *)icon forContact: (AIListContact *)contact;
 
 @end

@@ -45,7 +45,6 @@
 		3ECF4AA7161B4F3E00BCFA2F /* ESFlistAccountView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3ECF4AA6161B4F3E00BCFA2F /* ESFlistAccountView.xib */; };
 		3ECF4AB0161BB9B600BCFA2F /* ESFlistChatJoinViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3ECF4AAF161BB9B500BCFA2F /* ESFlistChatJoinViewController.m */; };
 		3ECF4AB3161BBB4F00BCFA2F /* ESFlistChatJoinView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3ECF4AB2161BBB4E00BCFA2F /* ESFlistChatJoinView.xib */; };
-		E2498DA318D5D21300154B32 /* EGOCache.m in Sources */ = {isa = PBXBuildFile; fileRef = E2498DA218D5D21300154B32 /* EGOCache.m */; };
 		E2A2616116FA4F2D00AAB9BF /* ESFlistRoom.m in Sources */ = {isa = PBXBuildFile; fileRef = E2A2616016FA4F2D00AAB9BF /* ESFlistRoom.m */; };
 		E2A91F4218D8C0EB000EB026 /* f-list_adium.c in Sources */ = {isa = PBXBuildFile; fileRef = E2A91F4118D8C0EB000EB026 /* f-list_adium.c */; };
 /* End PBXBuildFile section */
@@ -115,8 +114,6 @@
 		3ECF4AAE161BB9B400BCFA2F /* ESFlistChatJoinViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESFlistChatJoinViewController.h; sourceTree = "<group>"; };
 		3ECF4AAF161BB9B500BCFA2F /* ESFlistChatJoinViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ESFlistChatJoinViewController.m; sourceTree = "<group>"; };
 		3ECF4AB2161BBB4E00BCFA2F /* ESFlistChatJoinView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ESFlistChatJoinView.xib; sourceTree = "<group>"; };
-		E2498DA118D5D21300154B32 /* EGOCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EGOCache.h; sourceTree = "<group>"; };
-		E2498DA218D5D21300154B32 /* EGOCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EGOCache.m; sourceTree = "<group>"; };
 		E258E16B18D61E4000F93C72 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		E2A2615F16FA4F2D00AAB9BF /* ESFlistRoom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESFlistRoom.h; sourceTree = "<group>"; };
 		E2A2616016FA4F2D00AAB9BF /* ESFlistRoom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ESFlistRoom.m; sourceTree = "<group>"; };
@@ -150,7 +147,6 @@
 		3E5D27C2160BCDD300234193 = {
 			isa = PBXGroup;
 			children = (
-				E2498DA018D5D1F600154B32 /* External */,
 				3E6CD6A5164C60BC007D7D88 /* Resources */,
 				3EBA4F45160C1C37003D09FD /* Adium */,
 				3EBA4F44160C1BF2003D09FD /* F-List Pidgin */,
@@ -287,15 +283,6 @@
 			name = Adium;
 			sourceTree = "<group>";
 		};
-		E2498DA018D5D1F600154B32 /* External */ = {
-			isa = PBXGroup;
-			children = (
-				E2498DA118D5D21300154B32 /* EGOCache.h */,
-				E2498DA218D5D21300154B32 /* EGOCache.m */,
-			);
-			name = External;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -372,7 +359,6 @@
 				3E5D280C160BD18E00234193 /* f-list_commands.c in Sources */,
 				3E5D280D160BD18E00234193 /* f-list_connection.c in Sources */,
 				3E5D280E160BD18E00234193 /* f-list_friends.c in Sources */,
-				E2498DA318D5D21300154B32 /* EGOCache.m in Sources */,
 				3E5D280F160BD18E00234193 /* f-list_http.c in Sources */,
 				E2A91F4218D8C0EB000EB026 /* f-list_adium.c in Sources */,
 				3E5D2810160BD18E00234193 /* f-list_icon.c in Sources */,
@@ -463,6 +449,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ADIUM = "$(HOME)/Development/adium";
+				CLANG_ENABLE_OBJC_ARC = NO;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEPLOYMENT_LOCATION = NO;
@@ -502,6 +489,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ADIUM = "$(HOME)/Development/adium";
+				CLANG_ENABLE_OBJC_ARC = NO;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEPLOYMENT_LOCATION = NO;
