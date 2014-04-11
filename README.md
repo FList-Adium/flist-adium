@@ -1,10 +1,12 @@
 # F-List Adium
+
 **Version:** 1.7  
 **Minimum Adium Version:** 1.5.9
 
 This plugin is made for use with Adium, a multi-protocol IM client for Mac OS X. You can find it [here](http://www.adium.im).
 
 ## Version History
+
 ### 1.7.2
 
 + Removed EGOCache; incompatible with 10.6
@@ -58,9 +60,11 @@ This plugin is made for use with Adium, a multi-protocol IM client for Mac OS X.
 + Links to channels within chats don't work. This is done via a Pidgin-specific API in the Pidgin plugin, and I'm not sure how to do something like it in Adium. You can still join the channel by finding it in the list of channels for the Join Channel window.
 
 ## Installation
+
 Open the plugin bundle. Adium should automatically open and install it for you.
 
 ## Building
+
 The build system is fairly straightforward. What you'll need:
 
 + Xcode 4+ (only the latest version is ever tested, though)
