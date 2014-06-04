@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5056" systemVersion="14A238x" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment version="1060" defaultVersion="1060" identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="5053"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="5056"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="ESFlistChatJoinViewController">
@@ -141,19 +141,27 @@
                     <rect key="frame" x="72" y="173" width="16" height="16"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                 </progressIndicator>
-                <searchField verticalHuggingPriority="750" id="C7T-dJ-xFk">
+                <searchField wantsLayer="YES" verticalHuggingPriority="750" id="C7T-dJ-xFk">
                     <rect key="frame" x="0.0" y="143" width="478" height="22"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <searchFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" borderStyle="bezel" placeholderString="Search in Room List..." usesSingleLineMode="YES" bezelStyle="round" id="0tt-oT-Iag">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        <connections>
+                            <binding destination="118" name="predicate" keyPath="filterPredicate" id="mwE-Yv-Yw8">
+                                <dictionary key="options">
+                                    <string key="NSDisplayName">predicate</string>
+                                    <string key="NSPredicateFormat">keyPath contains $value</string>
+                                </dictionary>
+                            </binding>
+                        </connections>
                     </searchFieldCell>
                     <connections>
-                        <binding destination="118" name="predicate" keyPath="filterPredicate" id="2TC-Rr-7Bf">
+                        <binding destination="118" name="predicate" keyPath="filterPredicate" id="5W3-pr-yj7">
                             <dictionary key="options">
                                 <string key="NSDisplayName">predicate</string>
-                                <string key="NSPredicateFormat">channelName contains[cd] $value</string>
+                                <string key="NSPredicateFormat">channelTitle contains[cd] $value</string>
                             </dictionary>
                         </binding>
                     </connections>
