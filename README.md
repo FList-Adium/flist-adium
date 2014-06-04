@@ -1,11 +1,15 @@
 # F-List Adium
 
-**Version:** 1.7  
+**Version:** 1.7.3
 **Minimum Adium Version:** 1.5.9
 
 This plugin is made for use with Adium, a multi-protocol IM client for Mac OS X. You can find it [here](http://www.adium.im).
 
 ## Version History
+
+### 1.7.3
+
++ Fixed an issue with the search box not searching private room names properly.
 
 ### 1.7.2
 
