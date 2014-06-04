@@ -1,7 +1,7 @@
 # F-List Adium
 
-**Version:** 1.7.3
-**Minimum Adium Version:** 1.5.9
+**Version:** 1.7.3  
+**Minimum Adium Version:** 1.5.10
 
 This plugin is made for use with Adium, a multi-protocol IM client for Mac OS X. You can find it [here](http://www.adium.im).
 
