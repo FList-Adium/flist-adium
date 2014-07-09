@@ -20,6 +20,7 @@
  */
 #include <glib.h>
 #include "f-list_callbacks.h"
+#include "ESFlistNoteTrampoline.h"
 
 static GHashTable *callbacks = NULL;
 
@@ -547,9 +548,16 @@ static gboolean flist_process_PRI(PurpleConnection *pc, JsonObject *root) {
 static gboolean flist_process_RTB(PurpleConnection *pc, JsonObject *root) {
     FListAccount *fla = pc->proto_data;
     const gchar *type = json_object_get_string_member(root, "type");
+    JsonNode *n = json_node_new (JSON_NODE_OBJECT);
+    json_node_set_object(n, root);
+    JsonGenerator *gen = json_generator_new();
+    json_generator_set_root(gen, n);
+    json_node_free(n);
+    gchar *json = json_generator_to_data(gen, NULL);
     
-    purple_debug_info(FLIST_DEBUG, "We have received an RTB: %s\n", type);
-
+    purple_debug_info(FLIST_DEBUG, "We have received an RTB: \n%s\n", json);
+    
+    g_free(json);
     if(flist_str_equal(type, "friendrequest")) {
         flist_friends_received_request(fla);
     }
@@ -559,6 +567,16 @@ static gboolean flist_process_RTB(PurpleConnection *pc, JsonObject *root) {
     if(flist_str_equal(type, "friendremove")) {
         flist_friends_removed_friend(fla);
     }
+    if(flist_str_equal(type, "note")) {
+        const gchar *sender = json_object_get_string_member(root, "sender");
+        const gchar *subject = json_object_get_string_member(root, "subject");
+        const gint64 id = json_object_get_int_member(root, "id");
+        gchar *noteurl = g_strdup_printf("https://www.f-list.net/view_note.php?note_id=%" G_GINT64_FORMAT, id);
+        gchar *notifier = g_strdup_printf("%s has sent you a note with the subject '%s'", sender, subject);
+        SendFlistNote(notifier, noteurl, pc);
+        g_free(notifier);
+    }
+    
     return TRUE;
 }
 
