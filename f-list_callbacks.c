@@ -572,8 +572,8 @@ static gboolean flist_process_RTB(PurpleConnection *pc, JsonObject *root) {
         const gchar *subject = json_object_get_string_member(root, "subject");
         const gint64 id = json_object_get_int_member(root, "id");
         gchar *noteurl = g_strdup_printf("https://www.f-list.net/view_note.php?note_id=%" G_GINT64_FORMAT, id);
-        gchar *notifier = g_strdup_printf("%s has sent you a note with the subject '%s'", sender, subject);
-        SendFlistNote(notifier, noteurl, pc);
+        gchar *notifier = g_strdup_printf("%s has sent %s a note with the subject '%s'", sender, fla->proper_character,	 subject);
+        SendFlistNote(notifier, noteurl, pc, id);
         g_free(notifier);
     }
     

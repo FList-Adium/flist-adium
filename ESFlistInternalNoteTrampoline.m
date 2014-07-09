@@ -14,16 +14,29 @@
 #import <Adium/AISoundSet.h>
 
 @implementation ESFlistInternalNoteTrampoline
-void SendFlistNote(char *message, char *url, PurpleConnection *pc)
+static NSMutableSet *completed = nil;
++ (void)initialize
+{
+    [super initialize];
+    completed = [[NSMutableSet alloc] init];
+}
+void SendFlistNote(char *message, char *url, PurpleConnection *pc, int noteID)
 {
     AIAccount *account = (PURPLE_CONNECTION_IS_VALID(pc) ?
                           accountLookup(purple_connection_get_account(pc)) :
                           nil);
-    [ESFlistInternalNoteTrampoline showNewNoteWithMessage:message withURL:url withAccount:account];
+    [ESFlistInternalNoteTrampoline showNewNoteWithMessage:message withURL:url withAccount:account withID:noteID];
 }
 
-+ (void) showNewNoteWithMessage:(char *)inCStringMessage withURL:(char *)inURLCString withAccount:(AIAccount *)account
++ (void) showNewNoteWithMessage:(char *)inCStringMessage withURL:(char *)inURLCString withAccount:(AIAccount *)account withID:(int)noteID
 {
+    @synchronized(completed) {
+        if ([completed containsObject:[NSNumber numberWithInt:noteID]]) {
+            return;
+        }else{
+            [completed addObject:[NSNumber numberWithInt:noteID]];
+        }
+    }
     NSAttributedString *inMessage = [[NSAttributedString alloc] initWithString:[NSString stringWithUTF8String:inCStringMessage]];
     
     ESTextAndButtonsWindowController *textAndButtonsWindowController =
