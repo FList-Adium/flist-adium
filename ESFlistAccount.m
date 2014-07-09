@@ -200,7 +200,6 @@ NSObject *instanceLock;
         [contact setServersideIconData:icon notify:NotifyNow];
         usleep(100000);
     }
-    [contact release];
 }
 
 - (NSData *) getIconForContact: (AIListContact *)contact

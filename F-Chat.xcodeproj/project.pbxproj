@@ -47,6 +47,7 @@
 		3ECF4AB3161BBB4F00BCFA2F /* ESFlistChatJoinView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3ECF4AB2161BBB4E00BCFA2F /* ESFlistChatJoinView.xib */; };
 		E2A2616116FA4F2D00AAB9BF /* ESFlistRoom.m in Sources */ = {isa = PBXBuildFile; fileRef = E2A2616016FA4F2D00AAB9BF /* ESFlistRoom.m */; };
 		E2A91F4218D8C0EB000EB026 /* f-list_adium.c in Sources */ = {isa = PBXBuildFile; fileRef = E2A91F4118D8C0EB000EB026 /* f-list_adium.c */; };
+		E2F75D6F196CFCE1002AC187 /* ESFlistInternalNoteTrampoline.m in Sources */ = {isa = PBXBuildFile; fileRef = E2F75D6E196CFCE1002AC187 /* ESFlistInternalNoteTrampoline.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -119,6 +120,9 @@
 		E2A2616016FA4F2D00AAB9BF /* ESFlistRoom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ESFlistRoom.m; sourceTree = "<group>"; };
 		E2A91F4118D8C0EB000EB026 /* f-list_adium.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "f-list_adium.c"; sourceTree = "<group>"; };
 		E2A91F4318D8C1E7000EB026 /* f-list_adium.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "f-list_adium.h"; sourceTree = "<group>"; };
+		E2F75D67196CFC29002AC187 /* ESFlistNoteTrampoline.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ESFlistNoteTrampoline.h; sourceTree = "<group>"; };
+		E2F75D6D196CFCE1002AC187 /* ESFlistInternalNoteTrampoline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESFlistInternalNoteTrampoline.h; sourceTree = "<group>"; };
+		E2F75D6E196CFCE1002AC187 /* ESFlistInternalNoteTrampoline.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ESFlistInternalNoteTrampoline.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -279,6 +283,9 @@
 				3ECF4AB2161BBB4E00BCFA2F /* ESFlistChatJoinView.xib */,
 				E2A2615F16FA4F2D00AAB9BF /* ESFlistRoom.h */,
 				E2A2616016FA4F2D00AAB9BF /* ESFlistRoom.m */,
+				E2F75D67196CFC29002AC187 /* ESFlistNoteTrampoline.h */,
+				E2F75D6D196CFCE1002AC187 /* ESFlistInternalNoteTrampoline.h */,
+				E2F75D6E196CFCE1002AC187 /* ESFlistInternalNoteTrampoline.m */,
 			);
 			name = Adium;
 			sourceTree = "<group>";
@@ -358,6 +365,7 @@
 				3E5D280B160BD18E00234193 /* f-list_channels.c in Sources */,
 				3E5D280C160BD18E00234193 /* f-list_commands.c in Sources */,
 				3E5D280D160BD18E00234193 /* f-list_connection.c in Sources */,
+				E2F75D6F196CFCE1002AC187 /* ESFlistInternalNoteTrampoline.m in Sources */,
 				3E5D280E160BD18E00234193 /* f-list_friends.c in Sources */,
 				3E5D280F160BD18E00234193 /* f-list_http.c in Sources */,
 				E2A91F4218D8C0EB000EB026 /* f-list_adium.c in Sources */,

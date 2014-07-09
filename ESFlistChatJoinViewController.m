@@ -157,6 +157,7 @@
 - (void)joinChat:(id)param
 {
     // Actually just sends the enter key code.
+    // TODO: There has to be a better way to do this
     CGWindowID windowNumber = 0;
     [delegate performKeyEquivalent: [NSEvent keyEventWithType:NSKeyDown location:NSZeroPoint modifierFlags:(NSControlKeyMask | NSCommandKeyMask) timestamp:[[NSProcessInfo processInfo] systemUptime] windowNumber:windowNumber context:[NSGraphicsContext currentContext] characters:'\n' charactersIgnoringModifiers:'\n' isARepeat:NO keyCode:36]];
 }
