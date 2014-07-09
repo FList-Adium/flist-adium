@@ -6,6 +6,7 @@
 
 #import "ESFlistInternalNoteTrampoline.h"
 #import "ESFlistAccount.h"
+#import <Adium/ESTextAndButtonsWindowController.h>
 #import <Adium/AISharedAdium.h>
 #import <Adium/AIDockControllerProtocol.h>
 #import <Adium/AIContactAlertsControllerProtocol.h>
