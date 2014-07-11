@@ -2,7 +2,6 @@
 //  ESFlistInternalNoteTrampoline.m
 //  F-Chat
 //
-//
 
 #import "ESFlistInternalNoteTrampoline.h"
 #import "ESFlistAccount.h"

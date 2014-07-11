@@ -2,7 +2,6 @@
 //  ESFlistInternalNoteTrampoline.h
 //  F-Chat
 //
-//
 
 #import <Foundation/Foundation.h>
 
