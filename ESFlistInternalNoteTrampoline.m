@@ -19,7 +19,7 @@ static NSMutableSet *completed = nil;
     [super initialize];
     completed = [[NSMutableSet alloc] init];
 }
-void SendFlistNote(char *message, char *url, PurpleConnection *pc, int noteID)
+void SendFlistNote(char *message, char *url, PurpleConnection *pc, uint64 noteID)
 {
     AIAccount *account = (PURPLE_CONNECTION_IS_VALID(pc) ?
                           accountLookup(purple_connection_get_account(pc)) :
@@ -27,13 +27,13 @@ void SendFlistNote(char *message, char *url, PurpleConnection *pc, int noteID)
     [ESFlistInternalNoteTrampoline showNewNoteWithMessage:message withURL:url withAccount:account withID:noteID];
 }
 
-+ (void) showNewNoteWithMessage:(char *)inCStringMessage withURL:(char *)inURLCString withAccount:(AIAccount *)account withID:(int)noteID
++ (void) showNewNoteWithMessage:(char *)inCStringMessage withURL:(char *)inURLCString withAccount:(AIAccount *)account withID:(uint64)noteID
 {
     @synchronized(completed) {
-        if ([completed containsObject:[NSNumber numberWithInt:noteID]]) {
+        if ([completed containsObject:[NSNumber numberWithLong:noteID]]) {
             return;
         }else{
-            [completed addObject:[NSNumber numberWithInt:noteID]];
+            [completed addObject:[NSNumber numberWithLong:noteID]];
         }
     }
     NSAttributedString *inMessage = [[NSAttributedString alloc] initWithString:[NSString stringWithUTF8String:inCStringMessage]];
