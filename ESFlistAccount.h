@@ -36,9 +36,12 @@
 #define KEY_FLIST_LOGIN             @"Flist:User Name"
 #define KEY_FLIST_SYNC_FRIENDS		@"Flist:Sync Friends"
 #define KEY_FLIST_SYNC_BOOKMARKS	@"Flist:Sync Bookmarks"
-#define KEY_FLIST_SERVER_PORT       @"Flist:Server Port"
+#define KEY_FLIST_SERVER_PORT       @"Flist:Server Port (SSL)"
 #define KEY_FLIST_SERVER_HOST       @"Flist:Server Address"
 #define KEY_FLIST_DEBUG             @"Flist:Debug Connection"
+
+#define DEFAULT_FLIST_SERVER_HOST   @"chat.f-list.net"
+#define DEFAULT_FLIST_SERVER_PORT   @9799
 
 @interface ESFlistAccount : CBPurpleAccount {
 }

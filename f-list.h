@@ -66,7 +66,7 @@ typedef struct FListFriends_ FListFriends;
 #define FLIST_PLUGIN_VERSION    "1.7.4"
 #define USER_AGENT              "Adium F-Chat 1.7.4"
 #define FLIST_PLUGIN_ID         "prpl-flist"
-#define FLIST_PORT              9722
+#define FLIST_PORT              9799
 #define GLOBAL_NAME             "#FList"
 #define FLIST_DEBUG             "flist"
 
@@ -244,8 +244,8 @@ enum FListFriendsRequestType_ {
     FLIST_FRIENDS_UPDATE
 };
 
-#define FRAME_CHUNK_LENGTH 1024
-#define HELPER_RECV_BUF_SIZE 1024
+#define FRAME_CHUNK_LENGTH 4096
+#define HELPER_RECV_BUF_SIZE 4096
 
 #define REQUEST_HAS_CONNECTION (1 << 0)
 #define REQUEST_HAS_UPGRADE (1 << 1)
@@ -294,6 +294,7 @@ struct FListRoomlistChannel_ {
 struct FListAccount_ {
     PurpleAccount *pa;
     PurpleConnection *pc;
+    PurpleSslConnection *gsc;
     
     GHashTable *global_ops; //hash table of global operators
     GHashTable *all_characters; //hash table of FListCharacter, all that are online
@@ -306,7 +307,6 @@ struct FListAccount_ {
     gchar *password;
     gchar *proper_character;
     
-    PurpleUtilFetchUrlData *url_request;
     gchar *fls_cookie;
     gchar *b64data;
     ws_frame *current_frame;
@@ -318,8 +318,6 @@ struct FListAccount_ {
         
     gchar *rx_buf;
     gsize rx_len;
-    int fd;
-    int input_handle;
     
     PurpleRoomlist *roomlist;
     gboolean input_request;

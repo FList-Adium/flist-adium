@@ -5,6 +5,6 @@
 	<key>Connect Host</key>
 	<string>chat.f-list.net</string>
 	<key>Connect Port</key>
-	<integer>9722</integer>
+	<real>9799</real>
 </dict>
 </plist>

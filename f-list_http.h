@@ -25,13 +25,4 @@
 
 gchar *http_request(const gchar *url, gboolean http11, gboolean post, 
         const gchar *user_agent, GHashTable *req_table, GHashTable *cookie_table);
-
-PurpleUtilFetchUrlData *flist_login_fls_request(PurpleConnection *pc, const gchar *user_agent, 
-    const gchar *username, const gchar *password, PurpleUtilFetchUrlCallback callback);
-PurpleUtilFetchUrlData *flist_login_hash_request(PurpleConnection *pc, const gchar *user_agent, 
-    const gchar *fls_cookie, PurpleUtilFetchUrlCallback callback);
-PurpleUtilFetchUrlData *flist_login_ticket_request(PurpleConnection *pc, const gchar *user_agent, 
-    const gchar *username, const gchar *password, PurpleUtilFetchUrlCallback callback);
-
-gchar *flist_parse_FLS_cookie(const gchar*);
 #endif

@@ -438,17 +438,28 @@ static void flist_global_kinks_cb(FListWebRequestData *req_data,
     categories = json_object_get_members(kinks);
     cur = categories;
     while(cur) {
-        const gchar *category = cur->data;
-        kinks_array = json_object_get_array_member(kinks, category);
+        const gchar *category_id = cur->data;
+        JsonArray *kinks_array;
+        JsonObject *kink_group;
+        const gchar *category_name;
+        
+        kink_group = json_object_get_object_member(kinks, category_id);
+        category_name = json_object_get_string_member(kink_group, "group");
+        kinks_array = json_object_get_array_member(kink_group, "items");
         len = json_array_get_length(kinks_array);
         for(i = 0; i < len; i++) {
             JsonObject *kink_object = json_array_get_object_element(kinks_array, i);
             FListKink *kink = g_new0(FListKink, 1);
-            kink->category = purple_unescape_html(category);
+            kink->category = purple_unescape_html(category_name);
             kink->description = purple_unescape_html(json_object_get_string_member(kink_object, "description"));
             kink->name = purple_unescape_html(json_object_get_string_member(kink_object, "name"));
-            kink->kink_id = purple_unescape_html(json_object_get_string_member(kink_object, "fetish_id"));
+            kink->kink_id = g_strdup_printf("%d", (gint) json_object_get_int_member(kink_object, "kink_id"));
             g_hash_table_insert(flk->kinks_table, g_strdup(kink->name), kink);
+            if(fla->debug_mode) {
+                purple_debug_info(FLIST_DEBUG,
+                                  "Global kink processed. (ID: %s) (Category: %s) (Name: %s) (Description: %s)\n",
+                                  kink->kink_id, kink->category, kink->name, kink->description);
+            }
         }
         cur = g_list_next(cur);
     }

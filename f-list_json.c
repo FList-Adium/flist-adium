@@ -69,7 +69,7 @@ gboolean flist_web_request_timeout(gpointer data) {
 }
 
 FListWebRequestData* flist_web_request(const gchar* url, GHashTable* args, gboolean post, FListWebCallback cb, gpointer data) {
-    gchar *http = http_request(url, TRUE, post, USER_AGENT, args, NULL);
+    gchar *http = http_request(url, FALSE, post, USER_AGENT, args, NULL);
     FListWebRequestData *ret = g_new0(FListWebRequestData, 1);
     PurpleUtilFetchUrlData *url_data = purple_util_fetch_url_request(url, FALSE, USER_AGENT, FALSE, http, FALSE, flist_web_request_cb, ret);
     ret->url_data = url_data;

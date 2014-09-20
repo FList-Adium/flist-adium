@@ -34,6 +34,7 @@
 #include <string.h>
 #include <openssl/sha.h>
 #include <stdlib.h>
+#include <connection.h>
 
 /* disconnect after 90 seconds without a ping response */
 #define FLIST_TIMEOUT 90
@@ -283,11 +284,11 @@ void flist_request(PurpleConnection *pc, const gchar* type, JsonObject *object) 
     unsigned int mask_int;
     unsigned long long payload_len;
     unsigned char finNopcode;
-    unsigned int payload_len_small;
+    unsigned long long payload_len_small;
     unsigned int payload_offset = 6;
     unsigned int len_size;
-    int i;
-    unsigned int frame_size;
+    ssize_t i;
+    unsigned long long frame_size;
     char *data = NULL;
     
     // Get the account itself.
@@ -391,7 +392,7 @@ void flist_request(PurpleConnection *pc, const gchar* type, JsonObject *object) 
     
     // While we've got data to send and no errors
     while(sent < frame_size && i >= 0) {
-        i = write(fla->fd, data+sent, frame_size - sent);
+        i = purple_ssl_write(fla->gsc, data+sent, frame_size - sent);
         sent += i;
     }
     
@@ -406,16 +407,16 @@ cleanup:
     g_free(to_write);
 }
 
-static gboolean flist_recv(PurpleConnection *pc, gint source, PurpleInputCondition cond) {
+static gboolean flist_recv_ssl(PurpleConnection *pc, PurpleSslConnection *gsc) {
     FListAccount *fla = pc->proto_data;
     gchar buf[HELPER_RECV_BUF_SIZE];
     gssize len;
     
-    len = recv(fla->fd, buf, sizeof(buf) - 1, 0);
+    len = purple_ssl_read(gsc, buf, sizeof(buf) - 1);
     if(len <= 0) {
         if (errno == EAGAIN || errno == EWOULDBLOCK || errno == EINTR) return FALSE; //try again later
         //TODO: better error reporting
-        purple_connection_error_reason(pc, PURPLE_CONNECTION_ERROR_NETWORK_ERROR, "The connection has failed.");
+        purple_connection_error_reason(pc, PURPLE_CONNECTION_ERROR_NETWORK_ERROR, "The secured connection has failed.");
         return FALSE;
     }
     buf[len] = '\0';
@@ -742,17 +743,21 @@ static gboolean flist_handle_handshake(PurpleConnection *pc) {
     purple_debug_info("flist", "Identifying...");
     fla->rx_len = 0;
     fla->connection_status = FLIST_IDENTIFY;
+    purple_connection_update_progress(fla->pc, "Identifying...", 3, 5);
     flist_IDN(pc);
     return TRUE;
 }
-
-void flist_process(gpointer data, gint source, PurpleInputCondition cond) {
+void flist_process_ssl(gpointer data, PurpleSslConnection *gsc, PurpleInputCondition cond) {
     PurpleConnection *pc = data;
     FListAccount *fla = pc->proto_data;
-    
-    if(!flist_recv(pc, source, cond)) return;
-    if(fla->connection_status == FLIST_HANDSHAKE && !flist_handle_handshake(pc)) return;
-    while(flist_handle_input(pc));
+	if(!PURPLE_CONNECTION_IS_VALID(pc)) {
+        return;
+	}
+    if(cond == PURPLE_INPUT_READ) {
+        if(!flist_recv_ssl(pc, gsc)) return;
+        if(fla->connection_status == FLIST_HANDSHAKE && !flist_handle_handshake(pc)) return;
+        while(flist_handle_input(pc));
+    }
 }
 
 void flist_IDN(PurpleConnection *pc) {
@@ -773,31 +778,30 @@ void flist_IDN(PurpleConnection *pc) {
     json_object_unref(object);
 }
 
-void flist_connected(gpointer user_data, int fd, const gchar *err) {
-    FListAccount *fla = user_data;
+static void flist_connected_ssl(gpointer data, PurpleSslConnection *gsc,
+                                PurpleInputCondition cond) {
+    FListAccount *fla = data;
     struct timeval tv;
     
-    if(err) {
-        purple_connection_error_reason(fla->pc, PURPLE_CONNECTION_ERROR_NETWORK_ERROR, err);
-        fla->connection_status = FLIST_OFFLINE;
-        return;
-    }
+	if(!PURPLE_CONNECTION_IS_VALID(fla->pc)) {
+		purple_ssl_close(gsc);
+		g_return_if_reached();
+	}
     
-    fla->fd = fd;
-    purple_debug_info("flist", "Opened connection, initiating handshake...");
-    fla->input_handle = purple_input_add(fla->fd, PURPLE_INPUT_READ, flist_process, fla->pc);
+    fla->gsc = gsc;
+    purple_debug_info("flist", "Opened secure connection, initiating handshake...");
+    purple_connection_update_progress(fla->pc, "Sending opening handshake...", 2, 5);
+
+    purple_ssl_input_add(gsc, flist_process_ssl, fla->pc);
     fla->ping_timeout_handle = purple_timeout_add_seconds(FLIST_TIMEOUT, flist_disconnect_cb, fla->pc);
-    //if(fla->use_websocket_handshake) {
-    
-    // Build the handshake header.
     GString *headers_str = g_string_new(NULL);
     gchar *headers;
-    int len;
+    ssize_t len;
     g_string_append(headers_str, "GET / HTTP/1.1\r\n");
     g_string_append(headers_str, "Upgrade: WebSocket\r\n");
     g_string_append(headers_str, "Connection: Upgrade\r\n");
     g_string_append_printf(headers_str, "Host: %s:%d\r\n", fla->server_address, fla->server_port);
-    g_string_append(headers_str, "Origin: http://www.f-list.net\r\n");
+    g_string_append(headers_str, "Origin: https://www.f-list.net\r\n");
     
     // Generate random data, b64 it
     guchar nonce[16];
@@ -815,11 +819,20 @@ void flist_connected(gpointer user_data, int fd, const gchar *err) {
     headers = g_string_free(headers_str, FALSE);
     
     // Got the headers, send them and wait for the return.
-    len = write(fla->fd, headers, strlen(headers)); //TODO: check return value
+    len = purple_ssl_write(fla->gsc, headers, strlen(headers)); //TODO: check return value
     purple_debug_info("flist", "Sent handshake...");
     fla->connection_status = FLIST_HANDSHAKE;
     g_free(headers);
-    
+}
+
+void flist_error_ssl(PurpleSslConnection *gsc, PurpleSslErrorType error,
+                gpointer data) {
+    FListAccount *fla = data;
+    // If we're disconnected, nothing to do.
+    g_return_if_fail(PURPLE_CONNECTION_IS_VALID(fla->pc));
+    fla->gsc = NULL;
+    fla->connection_status = FLIST_OFFLINE;
+    purple_connection_ssl_error (fla->pc, error);
 }
 
 static void flist_receive_ticket(FListWebRequestData *req_data, gpointer data, JsonObject *root, const gchar *error) {
@@ -851,8 +864,10 @@ static void flist_receive_ticket(FListWebRequestData *req_data, gpointer data, J
     purple_debug_info("flist", "Login Ticket: %s\n", ticket);
     
     if(first) {
-        if(!purple_proxy_connect(fla->pc, fla->pa, fla->server_address, fla->server_port, flist_connected, fla)) {
-            purple_connection_error_reason(fla->pc, PURPLE_CONNECTION_ERROR_NETWORK_ERROR, _("Unable to open a connection."));
+        purple_connection_update_progress(fla->pc, "Opening secure connection...", 1, 5);
+        fla->gsc = purple_ssl_connect(fla->pa, fla->server_address, fla->server_port, flist_connected_ssl, flist_error_ssl, fla);
+        if(!fla->gsc) {
+            purple_connection_error_reason(fla->pc, PURPLE_CONNECTION_ERROR_NETWORK_ERROR, _("Unable to open a secured connection."));
             return;
         }
         fla->connection_status = FLIST_CONNECT;
@@ -861,13 +876,11 @@ static void flist_receive_ticket(FListWebRequestData *req_data, gpointer data, J
 
 static gboolean flist_ticket_timer_cb(gpointer data) {
     FListAccount *fla = data;
-    const gchar *url_pattern = "http://www.f-list.net/json/getApiTicket.php";
     GHashTable *args = g_hash_table_new_full(g_str_hash, g_str_equal, NULL, g_free);
     g_hash_table_insert(args, "account", g_strdup(fla->username));
     g_hash_table_insert(args, "password", g_strdup(fla->password));
-    g_hash_table_insert(args, "secure", g_strdup("no"));
-    
-    fla->ticket_request = flist_web_request(url_pattern, args, TRUE, flist_receive_ticket, fla); 
+    purple_connection_update_progress(fla->pc, "Getting ticket...", 0, 5);
+    fla->ticket_request = flist_web_request(FLIST_TICKET_URL, args, TRUE, flist_receive_ticket, fla); 
     fla->ticket_timer = 0;
     
     g_hash_table_destroy(args);

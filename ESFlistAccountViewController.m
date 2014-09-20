@@ -49,8 +49,8 @@
     
     NSString *server = [account preferenceForKey:KEY_FLIST_SERVER_HOST group:GROUP_ACCOUNT_STATUS];
     NSString *port = [account preferenceForKey:KEY_FLIST_SERVER_PORT group:GROUP_ACCOUNT_STATUS];
-	[textField_connectPort setStringValue:(port ?: @"9722")];
-	[textField_connectHost setStringValue:(server ?: @"chat.f-list.net")];
+	[textField_connectPort setStringValue:(port ?: [DEFAULT_FLIST_SERVER_PORT stringValue])];
+	[textField_connectHost setStringValue:(server ?: DEFAULT_FLIST_SERVER_HOST)];
     
 	[checkBox_syncfriends setState:[[account preferenceForKey:KEY_FLIST_SYNC_FRIENDS group:GROUP_ACCOUNT_STATUS] boolValue]];
 	[checkBox_syncbookmarks setState:[[account preferenceForKey:KEY_FLIST_SYNC_BOOKMARKS group:GROUP_ACCOUNT_STATUS] boolValue]];
@@ -82,7 +82,7 @@
                     forKey:KEY_FLIST_DEBUG group:GROUP_ACCOUNT_STATUS];
     [account setPreference:([[textField_connectHost stringValue] length] ? [textField_connectHost stringValue] : @"chat.f-list.net")
 					forKey:KEY_FLIST_SERVER_HOST group:GROUP_ACCOUNT_STATUS];
-    [account setPreference:([[textField_connectPort stringValue] length] ? [textField_connectPort stringValue] : @"9722")
+    [account setPreference:([[textField_connectPort stringValue] length] ? [textField_connectPort stringValue] : @"9799")
 					forKey:KEY_FLIST_SERVER_PORT group:GROUP_ACCOUNT_STATUS];
         
 }

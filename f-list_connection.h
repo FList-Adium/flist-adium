@@ -24,6 +24,7 @@
 
 #include "f-list.h"
 #include <openssl/sha.h>
+#define FLIST_TICKET_URL "https://www.f-list.net/json/getApiTicket.php"
 
 const gchar *flist_get_ticket(FListAccount *);
 void flist_request(PurpleConnection *, const gchar *, JsonObject *);

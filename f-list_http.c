@@ -61,7 +61,7 @@ gchar *http_request(const gchar *url, gboolean http11, gboolean post, const gcha
     g_string_append_printf(request_str, "%s /%s%s", (post ? "POST" : "GET"), page, (!post && req_table ? "?" : ""));
     if(req_table && !post) g_string_append_cgi(request_str, req_table);
     g_string_append_printf(request_str, " HTTP/%s\r\n", (http11 ? "1.1" : "1.0"));
-    g_string_append_printf(request_str, "Connection: close\r\n");
+    if(http11) g_string_append_printf(request_str, "Connection: close\r\n");
     if(user_agent) g_string_append_printf(request_str, "User-Agent: %s\r\n", user_agent);
     g_string_append_printf(request_str, "Accept: */*\r\n");
     g_string_append_printf(request_str, "Host: %s\r\n", address);
@@ -100,58 +100,3 @@ gchar *http_request(const gchar *url, gboolean http11, gboolean post, const gcha
     
     return g_string_free(request_str, FALSE);
 }
-
-PurpleUtilFetchUrlData *flist_login_fls_request(PurpleConnection *pc, const gchar *user_agent, 
-        const gchar *username, const gchar *password, PurpleUtilFetchUrlCallback callback) {
-    gchar *url = "http://www.f-list.net/action/script_login.php";
-    PurpleUtilFetchUrlData *ret;
-    GHashTable *post = g_hash_table_new_full(g_str_hash, g_str_equal, NULL, NULL);
-    gchar *request;
-    
-    g_hash_table_insert(post, (gpointer) "username", (gpointer) username);
-    g_hash_table_insert(post, (gpointer) "password", (gpointer) password);
-    request = http_request(url, FALSE, TRUE, user_agent, post, NULL);
-    ret = purple_util_fetch_url_request(url, FALSE, user_agent, FALSE, request, TRUE, callback, pc);
-    
-    g_free(request);
-    g_hash_table_destroy(post);
-    
-    return ret;
-}
-
-PurpleUtilFetchUrlData *flist_login_ticket_request(PurpleConnection *pc, const gchar *user_agent, const gchar *username, const gchar *password, PurpleUtilFetchUrlCallback callback) {
-    const gchar *url_pattern = "http://www.f-list.net/json/getApiTicket.php";
-    PurpleUtilFetchUrlData *ret;
-    GString *url_str = g_string_new(NULL);
-    gchar *url;
-    
-    g_string_append(url_str, url_pattern);
-    g_string_append_printf(url_str, "?account=%s", purple_url_encode(username));
-    g_string_append_printf(url_str, "&password=%s", purple_url_encode(password));
-    g_string_append_printf(url_str, "&secure=%s", "no");
-    url = g_string_free(url_str, FALSE);
-    ret = purple_util_fetch_url_request(url, FALSE, user_agent, TRUE, NULL, FALSE, callback, pc);
-    g_free(url);
-    return ret;
-}
-
-gchar *flist_parse_FLS_cookie(const gchar *data) {
-    //Set-Cookie: FLS=6da62d9f586c83dd6f946f1213abf486b3887d988847c4255c8f0502d9824df2; expires=Mon, 14-Mar-2011 13:28:07 GMT; path=/
-    GError *error = NULL;
-    GRegex *regex = g_regex_new("^Set-Cookie:\\s*FLS=([^;]*)(?:;|$).*", G_REGEX_CASELESS | G_REGEX_MULTILINE | G_REGEX_NEWLINE_CRLF, G_REGEX_MATCH_NEWLINE_CRLF, &error);
-    GMatchInfo *match = NULL;
-    gchar *ret = NULL;
-    
-    g_regex_match(regex, data, G_REGEX_MATCH_NEWLINE_CRLF, &match);
-    if(g_match_info_matches(match)) {
-        ret = g_match_info_fetch (match, 1);
-    }
-    
-    g_match_info_free(match);
-    g_regex_unref(regex);
-    if(error) g_error_free(error);
-    
-    return ret;
-}
-
-

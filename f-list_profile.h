@@ -22,6 +22,8 @@
 #define	FLIST_PROFILE_H
 
 #include "f-list.h"
+#define FLIST_CHARACTER_INFO_URL "https://www.f-list.net/json/api/character-info.php"
+#define FLIST_INFO_LIST_URL "https://www.f-list.net/json/api/info-list.php"
 
 gboolean flist_process_PRD(PurpleConnection *, JsonObject *);
 

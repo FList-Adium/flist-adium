@@ -181,20 +181,24 @@ static gboolean flist_process_profile(FListAccount *fla, JsonObject *root) {
 
     cur = categories;
     while(cur) {
-        const gchar *name = cur->data;
-        JsonObject *fields_object = json_object_get_object_member(info, name);
-        fields = json_object_get_members(fields_object);
-        cur2 = fields;
-        while(cur2) {
-            const gchar *fieldid = cur2->data;
-            JsonArray *field_array = json_object_get_array_member(fields_object, fieldid);
-            const gchar *key = json_array_get_string_element(field_array, 0);
-            const gchar *value = json_array_get_string_element(field_array, 1);
-            g_hash_table_insert(profile, (gpointer) key, (gpointer) value);
-            cur2 = g_list_next(cur2);
+        const gchar *group_name;
+        JsonObject *field_group;
+        JsonArray *field_array;
+        guint i, len;
+        
+        field_group = json_object_get_object_member(info, cur->data);
+        group_name = json_object_get_string_member(field_group, "group");
+        field_array = json_object_get_array_member(field_group, "items");
+        
+        len = json_array_get_length(field_array);
+        for(i = 0; i < len; i++) {
+            JsonObject *field_object = json_array_get_object_element(field_array, i);
+            const gchar *field_name = json_object_get_string_member(field_object, "name");
+            const gchar *field_value = json_object_get_string_member(field_object, "value");
+            g_hash_table_insert(profile, (gpointer) field_name, (gpointer) field_value);
         }
-        g_list_free(fields);
-        cur = g_list_next(cur);
+        
+        cur = cur->next;
     }
     g_list_free(categories);
 
@@ -256,7 +260,7 @@ void flist_get_profile(PurpleConnection *pc, const char *who) {
     flp->profile_info = purple_notify_user_info_new();
 
     link_str = g_string_new(NULL);
-    g_string_append_printf(link_str, "http://www.f-list.net/c/%s", purple_url_encode(who));
+    g_string_append_printf(link_str, "https://www.f-list.net/c/%s", purple_url_encode(who));
     link = g_string_free(link_str, FALSE);
 
     character = flist_get_character(fla, who);
@@ -276,10 +280,12 @@ void flist_get_profile(PurpleConnection *pc, const char *who) {
         purple_notify_user_info_destroy(flp->profile_info); flp->profile_info = NULL;
     } else if(flp->category_table) {
         //Try to get the profile through the website API first.
-        const gchar *url_pattern = "http://www.f-list.net/api/get/info/?name=%s";
-        gchar *url = g_strdup_printf(url_pattern, purple_url_encode(flp->character));
+        GHashTable *args = flist_web_request_args(fla);
+        g_hash_table_insert(args, "name", g_strdup(flp->character));
         //TODO: Update this to use the new API.
-        flp->profile_request = flist_web_request(url, NULL, TRUE, flist_get_profile_cb, fla);
+        flp->profile_request = flist_web_request(FLIST_CHARACTER_INFO_URL, args, TRUE, flist_get_profile_cb, fla);
+        g_hash_table_destroy(args);
+
     } else {
         //Try to get the profile through F-Chat.
         JsonObject *json = json_object_new();
@@ -321,25 +327,39 @@ static void flist_global_profile_cb(FListWebRequestData *req_data,
         return;
     }
     
+    purple_debug_info(FLIST_DEBUG, "Processing global profile fields...\n");
+    
     flp->category_table = g_hash_table_new_full(g_str_hash, g_str_equal, NULL, NULL);
     
     categories = json_object_get_members(info);
     cur = categories;
     while(cur) {
-        const gchar *name = cur->data;
-        JsonArray *fields_array = json_object_get_array_member(info, name);
-        FListProfileFieldCategory *category = g_new0(FListProfileFieldCategory, 1);
-
-        category->name = g_strdup(name);
-
-        len = json_array_get_length(fields_array);
+        const gchar *group_name;
+        JsonObject *field_group;
+        JsonArray *field_array;
+        FListProfileFieldCategory *category;
+        guint i, len;
+        
+        field_group = json_object_get_object_member(info, cur->data);
+        group_name = json_object_get_string_member(field_group, "group");
+        field_array = json_object_get_array_member(field_group, "items");
+        
+        category = g_new0(FListProfileFieldCategory, 1);
+        category->name = g_strdup(group_name);
+        
+        len = json_array_get_length(field_array);
         for(i = 0; i < len; i++) {
-            JsonArray *field_array = json_array_get_array_element(fields_array, i);
+            JsonObject *field_object = json_array_get_object_element(field_array, i);
             FListProfileField *field = g_new0(FListProfileField, 1);
             field->category = category;
-            field->fieldid = g_strdup(json_array_get_string_element(field_array, 0));
-            field->name = g_strdup(json_array_get_string_element(field_array, 1));
+            field->fieldid = g_strdup_printf("%d", (gint) json_object_get_int_member(field_object, "id"));
+            field->name = g_strdup(json_object_get_string_member(field_object, "name"));
             category->fields = g_slist_prepend(category->fields, field);
+            if(fla->debug_mode) {
+                purple_debug_info(FLIST_DEBUG,
+                                  "Global profile field processed. (ID: %s) (Category: %s) (Name: %s)\n",
+                                  field->fieldid, field->category->name, field->name);
+            }
         }
         category->fields = g_slist_sort(category->fields, (GCompareFunc) flist_profile_field_cmp);
         flp->category_list = g_slist_append(flp->category_list, category);
@@ -356,13 +376,12 @@ static void flist_global_profile_cb(FListWebRequestData *req_data,
 void flist_profile_load(PurpleConnection *pc) {
     FListAccount *fla = pc->proto_data;
     FListProfiles *flp;
-    const gchar *url = "http://www.f-list.net/api/get/infolist/";
     GSList *priority = NULL;
     
     fla->flist_profiles = g_new0(FListProfiles, 1);
     flp = _flist_profiles(fla);
     
-    flp->global_profile_request = flist_web_request(url, NULL, TRUE, flist_global_profile_cb, fla);
+    flp->global_profile_request = flist_web_request(FLIST_INFO_LIST_URL, NULL, TRUE, flist_global_profile_cb, fla);
 
     FListProfileField *field;
     

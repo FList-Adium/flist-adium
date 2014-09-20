@@ -160,10 +160,12 @@ NSObject *instanceLock;
     
     PurpleAccount *acct = [self purpleAccount];
 
-    const char *flist_server_address = [[self preferenceForKey:KEY_FLIST_SERVER_HOST group:GROUP_ACCOUNT_STATUS] UTF8String];
+    id pref = nil;
+    pref = ([self preferenceForKey:KEY_FLIST_SERVER_HOST group:GROUP_ACCOUNT_STATUS] ?: DEFAULT_FLIST_SERVER_HOST);
+    const char *flist_server_address = [pref UTF8String];
     purple_account_set_string(acct, "server_address", flist_server_address);
-    
-    int flist_server_port = (int) [[self preferenceForKey:KEY_FLIST_SERVER_PORT group:GROUP_ACCOUNT_STATUS] integerValue];
+    pref = ([self preferenceForKey:KEY_FLIST_SERVER_PORT group:GROUP_ACCOUNT_STATUS] ?: DEFAULT_FLIST_SERVER_PORT);
+    int flist_server_port = (int) [pref integerValue];
     purple_account_set_int(acct, "server_port", flist_server_port);
     
     BOOL flist_sync_friends = [[self preferenceForKey:KEY_FLIST_SYNC_FRIENDS group:GROUP_ACCOUNT_STATUS] boolValue];
@@ -260,6 +262,26 @@ NSObject *instanceLock;
     [super _receivedMessage:(NSAttributedString *)attributedMessage inChat:(AIChat *)chat fromListContact:(AIListContact *)sourceContact flags:(PurpleMessageFlags)flags date:(NSDate *)date];
 }
 
+
+// Show progress in the account window
+- (NSString *)connectionStringForStep:(NSInteger)step
+{
+    switch (step) {
+        case 0:
+            return @"Getting ticket";
+            break;
+        case 1:
+            return @"Opening secure connection";
+            break;
+        case 2:
+            return @"Performing opening handshake";
+            break;
+        case 3:
+            return @"Identifying";
+            break;
+    }
+    return nil;
+}
 
 // This enables the roll and dice commands to work properly.
 - (BOOL)shouldDisplayOutgoingMUCMessages

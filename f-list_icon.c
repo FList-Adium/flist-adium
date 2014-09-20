@@ -88,7 +88,7 @@ static void flist_fetch_icon_real(FListAccount *fla, FListFetchIcon *fli) {
     gchar *url;
 
     character_lower = g_utf8_strdown(fli->character, -1);
-    url = g_strdup_printf("http://static.f-list.net/images/avatar/%s.png", purple_url_encode(character_lower));
+    url = g_strdup_printf("https://static.f-list.net/images/avatar/%s.png", purple_url_encode(character_lower));
     fli->url_data = purple_util_fetch_url_request(url, TRUE, USER_AGENT, TRUE, NULL, FALSE, flist_fetch_icon_cb, fli);
     fla->icon_requests = g_slist_prepend(fla->icon_requests, fli);
     

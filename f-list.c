@@ -421,11 +421,7 @@ GSList *flist_get_all_characters(FListAccount *fla) {
 void flist_close(PurpleConnection *pc) {
     FListAccount *fla = pc->proto_data;
     if(!fla) return;
-
-    if(fla->connection_status == FLIST_CONNECT) purple_proxy_connect_cancel((void*) pc);
-    if(fla->input_handle > 0) purple_input_remove(fla->input_handle);
-    if(fla->fd > 0) close(fla->fd);
-    if(fla->url_request) purple_util_fetch_url_cancel(fla->url_request);
+    if(fla->gsc) purple_ssl_close(fla->gsc);
     
     if(fla->username) g_free(fla->username);
     if(fla->character) g_free(fla->character);
@@ -627,7 +623,7 @@ static PurplePluginInfo info = {
     "F-List Protocol Plugin",         /* summary */
     "F-List Protocol Plugin",         /* description */
     "TestPanther, Maou, John Highwater",         /* author */
-    "http://f-list.net/",    /* homepage */
+    "https://www.f-list.net/",    /* homepage */
     plugin_load,                     /* load */
     plugin_unload,                     /* unload */
     NULL,                         /* destroy */
@@ -645,7 +641,7 @@ static PurplePluginInfo info = {
 static void plugin_init(PurplePlugin *plugin) {
     PurpleAccountUserSplit *split;
     PurpleAccountOption *option;
-
+    
     split = purple_account_user_split_new("Character", "", ':');
     prpl_info.user_splits = g_list_append(prpl_info.user_splits, split);
 

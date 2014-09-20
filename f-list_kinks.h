@@ -23,7 +23,7 @@
 
 #include "f-list.h"
 
-#define FLIST_GLOBAL_KINKS_URL "http://www.f-list.net/api/get/kinklist/?mode=extended"
+#define FLIST_GLOBAL_KINKS_URL "https://www.f-list.net/json/api/kink-list.php"
 
 gboolean flist_process_FKS(PurpleConnection *, JsonObject *);
 
