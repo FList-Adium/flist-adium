@@ -51,6 +51,9 @@ gchar *flist_escape_attribute(const gchar *to_escape) {
 static gchar *format_bold(ParserVars *vars, const gchar *ts, const gchar *inner) {
     return g_strdup_printf("<b>%s</b>", inner);
 }
+static gchar *format_sub(ParserVars *vars, const gchar *ts, const gchar *inner) {
+    return g_strdup_printf("<sub>%s</sub>", inner);
+}
 static gchar *format_italic(ParserVars *vars, const gchar *ts, const gchar *inner) {
     return g_strdup_printf("<i>%s</i>", inner);
 }
@@ -143,6 +146,7 @@ BBCodeTag tag_user = { "user", FALSE, FALSE, format_user };
 BBCodeTag tag_icon = { "icon", FALSE, FALSE, format_icon };
 BBCodeTag tag_channel = { "channel", FALSE, FALSE, format_channel };
 BBCodeTag tag_session = { "session", FALSE, FALSE, format_session };
+BBCodeTag tag_sub = { "sub", TRUE, FALSE, format_sub };
 
 typedef struct BBCodeStack_ BBCodeStack;
 struct BBCodeStack_ {
@@ -295,6 +299,7 @@ void flist_bbcode_init() {
     g_hash_table_insert(tag_table, "i", &tag_italic);
     g_hash_table_insert(tag_table, "u", &tag_underline);
     g_hash_table_insert(tag_table, "s", &tag_strike);
+    g_hash_table_insert(tag_table, "sub", &tag_sub);
     g_hash_table_insert(tag_table, "url", &tag_url);
     g_hash_table_insert(tag_table, "color", &tag_color);
     g_hash_table_insert(tag_table, "user", &tag_user);

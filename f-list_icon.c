@@ -118,6 +118,7 @@ void flist_fetch_emoticon(FListAccount *fla, const gchar *smiley, const gchar *c
     int len;
     
     if(!purple_conv_custom_smiley_add(convo, smiley, "none", "0", TRUE)) {
+        purple_debug_warning("flist", "Failed to add emoticon to chat");
         return; /* for some reason or another we can't add it */
     }
     

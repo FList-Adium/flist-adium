@@ -444,21 +444,20 @@ int flist_send_message(PurpleConnection *pc, const gchar *who, const gchar *mess
     PurpleAccount *pa = purple_connection_get_account(pc);
     JsonObject *json;
     PurpleConvIm *im;
-    gchar *stripped_message, *escaped_message, *local_message, *bbcode_message, *special_message, *unspecial_message;
+    gchar *escaped_message, *local_message, *bbcode_message;
     int ret;
 
     g_return_val_if_fail(fla, 0);
 
     purple_debug(PURPLE_DEBUG_INFO, "flist", "Sending: %s\n", message);
     purple_debug(PURPLE_DEBUG_INFO, "flist", "Flags: %x\n", flags);
-
-    special_message = flist_escape_special(message);
-    stripped_message = purple_markup_strip_html(special_message); /* strip out formatting */
-    unspecial_message = flist_unescape_special(stripped_message);
-    escaped_message = purple_unescape_html(unspecial_message); /* escape the html entities that are left */
-    local_message = purple_markup_escape_text(unspecial_message, -1); /* re-escape the html entities */
+    
+    escaped_message = purple_unescape_html(message); /* escape the html entities that are left */
+    local_message = purple_markup_escape_text(message, -1); /* re-escape the html entities */
     bbcode_message = flist_bbcode_to_html(fla, NULL, local_message); /* convert the bbcode to html to display locally */
-
+    
+    purple_debug(PURPLE_DEBUG_INFO, "flist", "Final BBCode: %s\n", bbcode_message);
+    
     json = json_object_new();
     json_object_set_string_member(json, "recipient", who);
     json_object_set_string_member(json, "message", escaped_message);
@@ -475,12 +474,9 @@ int flist_send_message(PurpleConnection *pc, const gchar *who, const gchar *mess
     }
 
     //TODO: track error messages
-    g_free(stripped_message);
     g_free(escaped_message);
     g_free(bbcode_message);
     g_free(local_message);
-    g_free(unspecial_message);
-    g_free(special_message);
 
     return ret;
 }
@@ -513,7 +509,7 @@ int flist_send_channel_message(PurpleConnection *pc, int id, const char *message
     PurpleConversation *convo = purple_find_chat(pc, id);
     JsonObject *json = json_object_new();
     const gchar *channel;
-    gchar *stripped_message, *escaped_message, *local_message, *bbcode_message, *special_message, *unspecial_message;
+    gchar *escaped_message, *local_message, *bbcode_message;
 
     g_return_val_if_fail((fla = pc->proto_data), -EINVAL);
 
@@ -525,12 +521,10 @@ int flist_send_channel_message(PurpleConnection *pc, int id, const char *message
     purple_debug(PURPLE_DEBUG_INFO, "flist", "Sending: %s\n", message);
     purple_debug(PURPLE_DEBUG_INFO, "flist", "Flags: %x\n", flags);
 
-    special_message = flist_escape_special(message);
-    stripped_message = purple_markup_strip_html(special_message); /* strip out formatting */
-    unspecial_message = flist_unescape_special(stripped_message);
-    escaped_message = purple_unescape_html(unspecial_message); /* unescape the html entities that are left */
-    local_message = purple_markup_escape_text(unspecial_message, -1); /* re-escape the html entities */
+    escaped_message = purple_unescape_html(message); /* unescape the html entities that are left */
+    local_message = purple_markup_escape_text(message, -1); /* re-escape the html entities */
     bbcode_message = flist_bbcode_to_html(fla, convo, local_message); /* convert the bbcode to html to display locally */
+    purple_debug(PURPLE_DEBUG_INFO, "flist", "Final BBCode: %s\n", bbcode_message);
     channel = purple_conversation_get_name(convo);
     json_object_set_string_member(json, "message", escaped_message);
     json_object_set_string_member(json, "channel", channel);
@@ -542,11 +536,8 @@ int flist_send_channel_message(PurpleConnection *pc, int id, const char *message
 
     //TODO: track the message in case we get an error message?
     g_free(escaped_message);
-    g_free(stripped_message);
     g_free(bbcode_message);
     g_free(local_message);
-    g_free(special_message);
-    g_free(unspecial_message);
     
     return 0;
 }
@@ -631,22 +622,21 @@ PurpleCmdRet flist_channel_send_ad(PurpleConversation *convo, const gchar *cmd, 
     JsonObject *json;
     const gchar *channel = purple_conversation_get_name(convo);
     const gchar *message = args[0];
-    gchar *e1, *e2, *e3, *local_message, *full_message, *bbcode_message;
+    gchar *e1, *e2, *local_message, *full_message, *bbcode_message;
 
     g_return_val_if_fail(fla, 0);
 
     purple_debug(PURPLE_DEBUG_INFO, "flist", "Sending Ad: %s\n", message);
     
     e1 = flist_fix_newlines(message); /* fix the newlines ... */
-    e2 = purple_markup_strip_html(e1); /* strip out formatting */
-    e3 = purple_unescape_html(e2); /* escape the html entities that are left */
-    local_message = purple_markup_escape_text(e3, -1); /* re-escape the html entities */
+    e2 = purple_unescape_html(e1); /* escape the html entities that are left */
+    local_message = purple_markup_escape_text(e2, -1); /* re-escape the html entities */
     full_message = g_strdup_printf("[b](Roleplay Ad)[/b] %s", local_message);
     bbcode_message = flist_bbcode_to_html(fla, NULL, full_message); /* convert the bbcode to html to display locally */
 
     json = json_object_new();
     json_object_set_string_member(json, "channel", channel);
-    json_object_set_string_member(json, "message", e3);
+    json_object_set_string_member(json, "message", e2);
     flist_request(pc, FLIST_CHANNEL_ADVERSTISEMENT, json);
     json_object_unref(json);
 
@@ -654,17 +644,16 @@ PurpleCmdRet flist_channel_send_ad(PurpleConversation *convo, const gchar *cmd, 
     purple_debug(PURPLE_DEBUG_INFO, "flist", "INFO: channel(%s), id(%i), flags(%i)\n", channel, PURPLE_CONV_CHAT(convo)->id, PURPLE_MESSAGE_SEND);
 
     // Removed since the ad is manually written to the client window.
-    /*
-     * serv_got_chat_in(pc, PURPLE_CONV_CHAT(convo)->id, fla->proper_character, PURPLE_MESSAGE_SEND,
-     *   bbcode_message, time(NULL));
-     */
+    
+      serv_got_chat_in(pc, PURPLE_CONV_CHAT(convo)->id, fla->proper_character, PURPLE_MESSAGE_SEND,
+        bbcode_message, time(NULL));
+     
 
 
     
     //TODO: track error messages
     g_free(e1);
     g_free(e2);
-    g_free(e3);
     g_free(bbcode_message);
     g_free(full_message);
     g_free(local_message);

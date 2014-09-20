@@ -230,7 +230,12 @@ static gboolean flist_process_STA(PurpleConnection *pc, JsonObject *root) {
             character->status = flist_parse_status(status);
         }
         if(status_message) {
-            character->status_message = g_markup_escape_text(status_message, -1);
+            character->status_message =
+                flist_bbcode_to_html(
+                                     fla,
+                                     NULL,
+                                     g_markup_escape_text(status_message, -1)
+                                    );
         }
         flist_update_friend(pc, name, FALSE, FALSE);
     }

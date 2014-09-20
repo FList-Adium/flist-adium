@@ -215,7 +215,8 @@ NSObject *instanceLock;
 - (NSString *)encodedAttributedStringForSendingContentMessage:(AIContentMessage *)inContentMessage
 {
 	NSString	*messageString = inContentMessage.message.string;
-	BOOL		didCommand = [self.purpleAdapter attemptPurpleCommandOnMessage:messageString
+    
+	BOOL didCommand = [self.purpleAdapter attemptPurpleCommandOnMessage:messageString
                                                              fromAccount:(AIAccount *)inContentMessage.source
                                                                   inChat:inContentMessage.chat];
     
@@ -224,24 +225,23 @@ NSObject *instanceLock;
 	
     // If it's an ad, we gotta write it manually.
 	if (isAd) {
-        // Get the attributed string.
-		NSAttributedString *messageAttributedString = inContentMessage.message;
-        
-        // Clip off the command.
-        messageAttributedString = [messageAttributedString attributedSubstringFromRange:NSMakeRange([@"/ad " length],
-                                                                                                    messageAttributedString.length - [@"/ad " length])];
-        
-        // Dummy range to get the default attributes at the beginning.
-        NSRange dummy = NSMakeRange(0,0);
-        
-        // Range encompassing the entire prepended portion.
-        NSRange len = NSMakeRange(0,14);
+        /*NSString *name = [inContentMessage.chat name];
+        PurpleAccount *purpleAccount = [(CBPurpleAccount *) inContentMessage.source purpleAccount];
+        PurpleConversation *conv = purple_find_conversation_with_account(PURPLE_CONV_TYPE_CHAT, [name cStringUsingEncoding:NSUTF8StringEncoding], purpleAccount);
+        PurpleConnection *pc = purple_account_get_connection(purpleAccount);
+        FListAccount *fla = pc->proto_data;
+        gchar *full_message = g_strdup_printf("[b](Roleplay Ad)[/b] %s", [[messageString substringWithRange:NSMakeRange([@"/ad " length], messageString.length - [@"/ad " length])] cStringUsingEncoding:NSUTF8StringEncoding]);
+        char *formatted = flist_bbcode_to_html(fla, conv, full_message);
+        serv_got_chat_in(pc, purple_conv_chat_get_id(PURPLE_CONV_CHAT(conv)), fla->character, PURPLE_MESSAGE_RECV, formatted, time(NULL));
+        free(formatted);
+        free(full_message);*/
+        /*NSString *formattedString = [NSString stringWithCString:formatted encoding:NSUTF8StringEncoding];
+        NSAttributedString *messageAttributedString = [AIHTMLDecoder decodeHTML:formattedString];
+        g_free(formatted);
         
         // (to be bolded) string that's prepended to an ad.
-		NSMutableAttributedString *prep = [[NSMutableAttributedString alloc] initWithString:@"(Roleplay Ad) " attributes:[messageAttributedString attributesAtIndex:0 effectiveRange:&dummy]];
+		NSMutableAttributedString *prep = [[AIHTMLDecoder decodeHTML:@"<b>(Roleplay Ad)</b> "] mutableCopy];
         
-        // Bold it!
-        [prep addAttribute:NSFontAttributeName value:[NSFont boldSystemFontOfSize:0] range:len];
         
         // Slap the ad on.
         [prep appendAttributedString:messageAttributedString];
@@ -252,7 +252,7 @@ NSObject *instanceLock;
                    fromListContact:inContentMessage.source
                              flags:PURPLE_MESSAGE_SEND
                               date:inContentMessage.date];
-        [prep release];
+        [prep release];*/
 	}
 	return (didCommand ? nil : [super encodedAttributedStringForSendingContentMessage:inContentMessage]);
 }
